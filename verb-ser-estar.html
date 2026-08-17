@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verb Deep-Dive: ser & estar — Spanish Learning Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;--panel:#fff;--ink:#1e1e1e;--sub:#777;--muted:#aaa;
+  --accent:#b5342b;--accent-l:#fbe4e2;--accent-d:#7a2019;
+  --border:#e4e0da;--card:#fafaf8;
+  --t1:#8a5a2d;--t1-l:#f7ecdd;
+  --t2:#2d5a8c;--t2-l:#e2edf7;
+  --warn:#b5651d;--warn-bg:#fff4e6;
+  --radius:8px;--shadow:0 1px 3px rgba(0,0,0,.07);
+}
+body.dark{
+  --bg:#1a1615;--panel:#241d1c;--ink:#ede6e4;--sub:#a89b98;--muted:#6b625f;
+  --accent:#e0776e;--accent-l:#3a2320;--accent-d:#f0a49d;
+  --border:#3a2f2c;--card:#2a2220;
+  --t1:#d9a05c;--t1-l:#332a1c;
+  --t2:#6fa3d8;--t2-l:#1e2c3a;
+  --warn:#d99456;--warn-bg:#332a1c;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;transition:background .15s,color .15s}
+a{color:var(--accent)}
+.wrap{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+.top-bar{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:10}
+.top-bar button,.top-bar a{height:38px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.top-bar a{width:auto;border-radius:99px;padding:0 14px;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.mode-toggle{width:38px}
+
+.top{margin-bottom:8px}
+.top h1{font-size:22px;font-weight:700;color:var(--accent-d)}
+.top .sub{font-size:13px;color:var(--sub);margin-top:4px}
+
+.intro{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:20px 0;box-shadow:var(--shadow);font-size:13.5px}
+.intro b{color:var(--accent-d)}
+
+.jump{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.jump a{font-size:11.5px;font-weight:600;background:var(--card);border:1px solid var(--border);padding:5px 11px;border-radius:99px;color:var(--sub)}
+.jump a:hover{border-color:var(--accent);color:var(--accent-d)}
+
+.section{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);scroll-margin-top:20px}
+.section h2{font-size:16px;font-weight:700;color:var(--accent-d)}
+.section .tense-en{font-size:12px;color:var(--sub);margin-bottom:14px;font-style:italic}
+.section p{font-size:13px;margin-bottom:8px}
+
+.conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-bottom:12px}
+.conj-row{display:flex;flex-direction:column;background:var(--card);border-radius:6px;padding:6px 10px}
+.conj-row .top{display:flex;align-items:center;gap:8px}
+.conj-row .pron{font-size:11.5px;color:var(--sub);width:110px;flex-shrink:0}
+.conj-row .form{font-weight:700;font-size:14px;flex:1}
+.conj-row button{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:10.5px;flex-shrink:0}
+.conj-row button:hover{background:var(--accent);color:#fff}
+.conj-row .en{font-size:11.5px;line-height:1.2;color:var(--sub);padding-left:118px;margin-top:-2px}
+
+.examples{margin-top:14px;border-top:1px dashed var(--border);padding-top:12px}
+.examples .ex-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--sub);margin-bottom:6px}
+.ex-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:6px;padding:7px 12px;margin-bottom:6px}
+.ex-row:last-child{margin-bottom:0}
+.ex-row .es{font-weight:600;font-size:13.5px;flex:1}
+.ex-row .en{font-size:12px;color:var(--sub);flex:1}
+.ex-row button{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:10.5px;flex-shrink:0}
+.ex-row button:hover{background:var(--accent);color:#fff}
+
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.tip{background:var(--t2-l);border-left:3px solid var(--t2);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.tip b{color:var(--t2)}
+.cross{background:var(--t1-l);border-left:3px solid var(--t1);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.cross b{color:var(--t1)}
+
+.trap{background:var(--warn-bg);border:2px solid var(--warn);border-radius:var(--radius);padding:16px 20px;margin-top:12px}
+.trap h3{color:var(--warn);font-size:14px;margin-bottom:8px}
+.trappair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.trapcol{background:var(--panel);border-radius:6px;padding:10px 12px}
+.trapcol .lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;color:var(--sub);margin-bottom:4px}
+.trapcol .es{font-weight:700;font-size:13.5px}
+.trapcol .en{font-size:12px;color:var(--sub);margin-top:2px}
+
+.gw{border-bottom:1px dotted var(--sub);cursor:help}
+#glossTip{position:fixed;background:rgba(20,20,20,.94);color:#fff;font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease;z-index:1000}
+#glossTip.show{opacity:1}
+
+@media(max-width:520px){.conj-grid,.trappair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a href="index.html" title="Back to home">🏠 Home</a>
+  <button class="mode-toggle" id="modeBtn" title="Toggle dark mode">🌙</button>
+</div>
+<div class="wrap">
+  <div class="top">
+    <h1>Verb Deep-Dive: ser & estar (to be)</h1>
+    <div class="sub">Spanish's biggest structural fork — two "to be" verbs that are NOT interchangeable.</div>
+  </div>
+
+  <div class="intro">
+    English and German both get by with one "to be" verb. Spanish splits the job in two: <b>ser</b> is for lasting identity — what something IS at its core (origin, profession, physical traits, time, relationships). <b>estar</b> is for temporary state or location — how something IS right now, or where it is. Picking the wrong one is one of the most common mistakes English speakers make in Spanish, and it can genuinely change the meaning of a sentence, not just the grammar.
+  </div>
+
+  <div class="jump">
+    <a href="#ser-presente">ser: Presente</a>
+    <a href="#estar-presente">estar: Presente</a>
+    <a href="#trap">ser vs. estar</a>
+    <a href="#preterito">Pretérito</a>
+    <a href="#progresivo">estar + gerundio</a>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="section">
+    <h2>📋 Quick reference</h2>
+    <table id="refTable" style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px"></table>
+  </div>
+</div>
+
+<script>
+const PRONOUNS = ["yo","tú","él/ella/usted","nosotros","ustedes/ellos"];
+
+const SER_TENSES = [
+  {
+    id:"ser-presente", verb:"ser", title:"ser: Presente", titleEn:"Present tense — identity, origin, traits, time, relationships",
+    forms:["soy","eres","es","somos","son"],
+    en:["I am","you are","he/she/it is / you are (formal)","we are","you all / they are"],
+    examples:[
+      {es:"Soy de México.", en:"I'm from Mexico. (origin)", words:["I am","from","Mexico"]},
+      {es:"Ella es doctora.", en:"She's a doctor. (profession)", words:["She","is","doctor"]},
+      {es:"Mi hermano es alto.", en:"My brother is tall. (lasting trait)", words:["My","brother","is","tall"]},
+      {es:"Son las tres.", en:"It's three o'clock. (time)", words:["Are","the","three"]},
+      {es:"Esta es mi mamá.", en:"This is my mom. (relationship/identity)", words:["This","is","my","mom"]}
+    ]
+  },
+  {
+    id:"ser-preterito", verb:"ser", title:"ser: Pretérito", titleEn:"Simple past — irregular, and shared in form with the verb ir (to go)",
+    forms:["fui","fuiste","fue","fuimos","fueron"],
+    en:["I was","you were","he/she/it was / you were (formal)","we were","you all / they were"],
+    examples:[
+      {es:"Fui estudiante aquí.", en:"I was a student here.", words:["I was","student","here"]},
+      {es:"Mi abuela fue maestra.", en:"My grandmother was a teacher.", words:["My","grandmother","was","teacher"]},
+      {es:"Fuimos muy felices.", en:"We were very happy.", words:["We were","very","happy"]}
+    ],
+    tip:"fui, fuiste, fue... looks EXACTLY like the pretérito of ir (to go) — same forms, same everything. Context is the only way to tell them apart: \"fui a la tienda\" (I went to the store) vs. \"fui estudiante\" (I was a student)."
+  }
+];
+
+const ESTAR_TENSES = [
+  {
+    id:"estar-presente", verb:"estar", title:"estar: Presente", titleEn:"Present tense — temporary state, location, condition",
+    forms:["estoy","estás","está","estamos","están"],
+    en:["I am","you are","he/she/it is / you are (formal)","we are","you all / they are"],
+    examples:[
+      {es:"Estoy cansado.", en:"I'm tired. (temporary state)", words:["I am","tired"]},
+      {es:"¿Dónde estás?", en:"Where are you? (location)", words:["Where","are"]},
+      {es:"La sopa está caliente.", en:"The soup is hot. (current condition)", words:["The","soup","is","hot"]},
+      {es:"Estamos en la playa.", en:"We're at the beach. (location)", words:["We are","at","the","beach"]},
+      {es:"¿Cómo estás?", en:"How are you? (state right now)", words:["How","are"]}
+    ]
+  },
+  {
+    id:"estar-preterito", verb:"estar", title:"estar: Pretérito", titleEn:"Simple past — irregular stem, worth memorizing as a set",
+    forms:["estuve","estuviste","estuvo","estuvimos","estuvieron"],
+    en:["I was","you were","he/she/it was / you were (formal)","we were","you all / they were"],
+    examples:[
+      {es:"Estuve enfermo ayer.", en:"I was sick yesterday.", words:["I was","sick","yesterday"]},
+      {es:"¿Dónde estuviste?", en:"Where were you?", words:["Where","were"]},
+      {es:"Estuvimos en la fiesta toda la noche.", en:"We were at the party all night.", words:["We were","at","the","party","all","the","night"]}
+    ]
+  }
+];
+
+const TRAP_PAIRS = [
+  {
+    ser:{es:"Es aburrido.", en:"He's boring. (that's just how he is)", words:["Is","boring"]},
+    estar:{es:"Está aburrido.", en:"He's bored. (right now, temporarily)", words:["Is","bored"]}
+  },
+  {
+    ser:{es:"Es listo.", en:"He's clever. (a trait)", words:["Is","clever"]},
+    estar:{es:"Está listo.", en:"He's ready. (a state)", words:["Is","ready"]}
+  },
+  {
+    ser:{es:"Es verde.", en:"It's green. (its color)", words:["Is","green"]},
+    estar:{es:"Está verde.", en:"It's unripe. (green = not ready yet)", words:["Is","unripe"]}
+  }
+];
+
+const PROGRESIVO_EX = [
+  {es:"Estoy hablando por teléfono.", en:"I'm talking on the phone. (right now)", words:["I am","talking","on","phone"]},
+  {es:"Estamos aprendiendo español.", en:"We're learning Spanish. (in progress)", words:["We are","learning","Spanish"]},
+  {es:"¿Qué estás haciendo?", en:"What are you doing?", words:["What","are","doing"]}
+];
+
+const REF = [SER_TENSES[0], ESTAR_TENSES[0], SER_TENSES[1], ESTAR_TENSES[1]];
+
+function speak(text){
+  if(!('speechSynthesis' in window))return;
+  const clean=text.replace(/\s*\(.*?\)\s*/g,' ').replace(/\s*\/\s*/g,', ').replace(/\s{2,}/g,' ').trim();
+  if(!clean)return;
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang='es-MX';u.rate=0.88;
+  window.speechSynthesis.cancel();window.speechSynthesis.speak(u);
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function glossHTML(es, words){
+  if(!words) return esc(es);
+  const tokens = es.split(' ');
+  return tokens.map((tok,i)=>{
+    const m = tok.match(/^([¿¡]*)([^\s.,!?;:()"'’]+)([.,!?;:()"'’]*)$/);
+    if(!m||words[i]===undefined) return esc(tok);
+    const lead=m[1]||'', word=m[2], trail=m[3]||'';
+    return `${esc(lead)}<span class="gw" data-tip="${esc(words[i])}">${esc(word)}</span>${esc(trail)}`;
+  }).join(' ');
+}
+
+function exRow(ex){
+  return `<div class="ex-row"><div class="es">${glossHTML(ex.es, ex.words)}</div><div class="en">${esc(ex.en)}</div><button data-es="${esc(ex.es)}" title="Hear">🔊</button></div>`;
+}
+
+function conjBlock(t){
+  let h = `<div class="section" id="${t.id}"><h2>${esc(t.title)}</h2><div class="tense-en">${esc(t.titleEn)}</div><div class="conj-grid">`;
+  PRONOUNS.forEach((p,i)=>{
+    const full = p.split('/').map(pr=>`${pr} ${t.forms[i]}`).join('. ');
+    h += `<div class="conj-row">
+      <div class="top">
+        <span class="pron">${esc(p)}</span>
+        <span class="form"><span class="gw" data-tip="${esc(t.en[i])}">${esc(t.forms[i])}</span></span>
+        <button data-es="${esc(full)}" title="Hear">🔊</button>
+      </div>
+      <div class="en">${esc(t.en[i])}</div>
+    </div>`;
+  });
+  h += `</div><div class="examples"><div class="ex-label">Examples</div>`;
+  t.examples.forEach(ex=>h+=exRow(ex));
+  h += `</div>`;
+  if(t.tip) h += `<div class="tip"><b>Note:</b> ${esc(t.tip)}</div>`;
+  h += `</div>`;
+  return h;
+}
+
+function render(){
+  const el = document.getElementById('sections');
+  let h = '';
+  h += conjBlock(SER_TENSES[0]);
+  h += conjBlock(ESTAR_TENSES[0]);
+
+  h += `<div class="section" id="trap">
+    <h2>ser vs. estar — the same word pair, different meaning</h2>
+    <div class="tense-en">These minimal pairs show why the choice genuinely changes what you're saying</div>
+    <p>The clearest way to see the difference: some adjectives mean something different depending on which verb you pair them with.</p>
+    <div class="trap">
+      <h3>⚠️ Same adjective, different verb, different meaning</h3>`;
+  TRAP_PAIRS.forEach(pair=>{
+    h += `<div class="trappair">
+      <div class="trapcol"><div class="lbl">ser</div><div class="es">${glossHTML(pair.ser.es, pair.ser.words)}</div><div class="en">${esc(pair.ser.en)}</div></div>
+      <div class="trapcol"><div class="lbl">estar</div><div class="es">${glossHTML(pair.estar.es, pair.estar.words)}</div><div class="en">${esc(pair.estar.en)}</div></div>
+    </div>`;
+  });
+  h += `</div>
+    <div class="note">📝 Rule of thumb: ser answers "what is it, fundamentally?" — estar answers "what's going on with it right now, or where is it?" When in doubt, ask yourself whether you're describing a lasting fact or a current condition/location.</div>
+  </div>`;
+
+  h += `<div class="section" id="preterito">
+    <h2>Pretérito — both verbs, side by side</h2>
+    <div class="tense-en">The everyday spoken past tense for both ser and estar</div>`;
+  h += conjBlock(SER_TENSES[1]);
+  h += conjBlock(ESTAR_TENSES[1]);
+  h += `<div class="cross">🔗 <b>Worth knowing:</b> Spanish actually has a SECOND simple past tense — the imperfecto — used for ongoing or habitual past states ("era joven" = "I was young," describing a long stretch of time, vs. "fui joven" for a bounded fact). That distinction is its own topic; this page sticks to pretérito since it's the more immediately useful form to start with.</div>
+  </div>`;
+
+  h += `<div class="section" id="progresivo">
+    <h2>estar + gerundio — the progressive tense</h2>
+    <div class="tense-en">A job only estar does — describing an action in progress right now</div>
+    <p>Pair a conjugated estar with a gerundio (the -ando/-iendo form) to say something is happening right now — closely matching English's "-ing" progressive. ser never does this job.</p>
+    <div class="examples"><div class="ex-label">Examples</div>`;
+  PROGRESIVO_EX.forEach(ex=>h+=exRow(ex));
+  h += `</div>
+    <div class="note">📝 Gerundio formation: -ar verbs → -ando (hablar → hablando), -er/-ir verbs → -iendo (aprender → aprendiendo, escribir → escribiendo).</div>
+  </div>`;
+
+  el.innerHTML = h;
+  el.querySelectorAll('button[data-es]').forEach(b=>b.addEventListener('click',e=>speak(e.currentTarget.dataset.es)));
+
+  const t = document.getElementById('refTable');
+  let th = `<thead><tr><th style="text-align:left;padding:6px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;color:var(--sub)">Pronoun</th>`;
+  REF.forEach(ts=>th += `<th style="text-align:left;padding:6px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;color:var(--sub)">${esc(ts.title.replace('ser: ','ser ').replace('estar: ','estar '))}</th>`);
+  th += `</tr></thead><tbody>`;
+  PRONOUNS.forEach((p,i)=>{
+    th += `<tr><td style="padding:6px;border-bottom:1px solid var(--border);font-weight:600;color:var(--accent-d)">${esc(p)}</td>`;
+    REF.forEach(ts=>th += `<td style="padding:6px;border-bottom:1px solid var(--border)"><span class="gw" data-tip="${esc(ts.en[i])}">${esc(ts.forms[i])}</span></td>`);
+    th += `</tr>`;
+  });
+  th += `</tbody>`;
+  t.innerHTML = th;
+}
+render();
+
+function initMode(){
+  const saved=localStorage.getItem('es-a1-dark');
+  const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setMode(saved!==null?saved==='1':prefersDark);
+}
+function setMode(dark){
+  document.body.classList.toggle('dark',dark);
+  document.getElementById('modeBtn').textContent=dark?'☀️':'🌙';
+  try{localStorage.setItem('es-a1-dark',dark?'1':'0');}catch(e){}
+}
+document.getElementById('modeBtn').onclick=()=>setMode(!document.body.classList.contains('dark'));
+initMode();
+
+(function(){
+  let tipEl, timer, autoHideTimer;
+  function ensureTip(){
+    if(!tipEl){ tipEl=document.createElement('div'); tipEl.id='glossTip'; document.body.appendChild(tipEl); }
+    return tipEl;
+  }
+  function showTip(target){
+    const tip=ensureTip();
+    tip.textContent=target.dataset.tip;
+    tip.classList.add('show');
+    const r=target.getBoundingClientRect();
+    tip.style.left=Math.min(Math.max(r.left+r.width/2,60),window.innerWidth-60)+'px';
+    tip.style.top=Math.max(r.top-10,10)+'px';
+    tip.style.transform='translate(-50%,-100%)';
+    clearTimeout(autoHideTimer);
+    autoHideTimer=setTimeout(hideTip,5000);
+  }
+  function hideTip(){ clearTimeout(timer); clearTimeout(autoHideTimer); ensureTip().classList.remove('show'); }
+  document.addEventListener('mouseover',e=>{
+    const g=e.target.closest('.gw'); if(!g)return;
+    clearTimeout(timer); timer=setTimeout(()=>showTip(g),500);
+  });
+  document.addEventListener('mouseout',e=>{ if(e.target.closest('.gw')) hideTip(); });
+  document.addEventListener('click',e=>{
+    const g=e.target.closest('.gw');
+    if(g){
+      e.stopPropagation();
+      const tip=ensureTip();
+      if(tip.classList.contains('show') && tip.textContent===g.dataset.tip) hideTip();
+      else { clearTimeout(timer); showTip(g); }
+      return;
+    }
+    hideTip();
+  });
+})();
+</script>
+</body>
+</html>
