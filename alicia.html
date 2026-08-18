@@ -1,0 +1,4610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alicia en el País de las Maravillas — Spanish Learning Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;--panel:#fff;--ink:#1e1e1e;--sub:#777;--muted:#aaa;
+  --accent:#b5342b;--accent-l:#fbe4e2;--accent-d:#7a2019;
+  --border:#e4e0da;--card:#fafaf8;
+  --warn:#b5651d;--warn-bg:#fff4e6;
+  --radius:8px;--shadow:0 1px 3px rgba(0,0,0,.07);
+}
+body.dark{
+  --bg:#1a1615;--panel:#241d1c;--ink:#ede6e4;--sub:#a89b98;--muted:#6b625f;
+  --accent:#e0776e;--accent-l:#3a2320;--accent-d:#f0a49d;
+  --border:#3a2f2c;--card:#2a2220;--warn:#d99456;--warn-bg:#332a1c;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;transition:background .15s,color .15s}
+a{color:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 190px}
+.top-bar{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:20}
+.top-bar button,.top-bar a{height:38px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.top-bar a{width:auto;border-radius:99px;padding:0 14px;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.mode-toggle{width:38px}
+
+.top{margin-bottom:10px}
+.top h1{font-size:21px;font-weight:700;color:var(--accent-d)}
+.top .sub{font-size:12.5px;color:var(--sub);margin-top:4px}
+.intro{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;box-shadow:var(--shadow);font-size:12.5px}
+.intro b{color:var(--accent-d)}
+
+.toc{display:flex;gap:5px;overflow-x:auto;padding:4px 0 14px;margin-bottom:6px}
+.toc button{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--sub);font-size:11.5px;font-weight:700;cursor:pointer}
+.toc button.chapter-start{margin-left:10px}
+.toc button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.page-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);min-height:260px}
+.chapter-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sub)}
+.page-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:6px;margin-top:2px}
+.page-title{font-size:19px;font-weight:800;color:var(--accent-d)}
+.page-title-en{font-size:12.5px;color:var(--sub);font-style:italic;margin-bottom:18px}
+.story{font-size:19px;line-height:2.15}
+.sent{padding:2px 3px;border-radius:5px;transition:background .2s;cursor:pointer}
+.sent.reading{background:var(--accent-l)}
+.gw{border-bottom:1px dotted var(--sub);cursor:help}
+.gw.word-marked{background:var(--accent);color:#fff;border-radius:3px;border-bottom-color:transparent}
+
+.pageturn{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
+.pageturn button{flex:1;padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--ink);font-size:13px;font-weight:600;cursor:pointer}
+.pageturn button:hover:not(:disabled){border-color:var(--accent);color:var(--accent-d)}
+.pageturn button:disabled{opacity:.4;cursor:default}
+
+.player{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--border);box-shadow:0 -2px 10px rgba(0,0,0,.06);z-index:20}
+.player-inner{max-width:760px;margin:0 auto;padding:10px 20px 14px}
+.player-row{display:flex;align-items:center;gap:14px;justify-content:center}
+.player button{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.player button.play{width:50px;height:50px;background:var(--accent);color:#fff;border-color:var(--accent);font-size:18px}
+.player button:hover{border-color:var(--accent)}
+.scrub{width:100%;margin-top:9px;accent-color:var(--accent)}
+.player-label{font-size:11.5px;color:var(--sub);text-align:center;margin-top:2px}
+.speed-row{display:flex;align-items:center;gap:8px;margin-top:9px}
+.speed-row label{font-size:11px;color:var(--sub);flex-shrink:0;width:70px}
+.speed-row input{flex:1;accent-color:var(--accent)}
+.speed-row .val{font-size:11px;color:var(--sub);width:38px;text-align:right;flex-shrink:0}
+.hint{font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px}
+
+#glossTip{position:fixed;background:rgba(20,20,20,.94);color:#fff;font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease;z-index:1000}
+#glossTip.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a href="books.html" title="Back to Simple Books">📖 Back</a>
+  <button class="mode-toggle" id="modeBtn" title="Toggle dark mode">🌙</button>
+</div>
+<div class="wrap">
+  <div class="top">
+    <h1>Alicia en el País de las Maravillas — Muy Fácil</h1>
+    <div class="sub">An original, very simplified Spanish retelling of the complete book — all 12 chapters. Tap/hover any word for its meaning.</div>
+  </div>
+
+  <div class="intro">
+    This is <b>not</b> a translation of Lewis Carroll's book — it's an original retelling in very simple Spanish, written from scratch to follow the real story chapter by chapter, start to finish (the book itself is public domain; the sentences here are freshly written, not lifted from any edition). <b>Double-click any word</b> to mark a starting point, then press ▶️ or <b>spacebar</b> to start reading from exactly there.
+  </div>
+
+  <div class="toc" id="toc"></div>
+
+  <div class="page-card" id="pageCard"></div>
+</div>
+
+<div class="player">
+  <div class="player-inner">
+    <div class="player-row">
+      <button id="prevBtn" title="Previous sentence">⏮</button>
+      <button id="playBtn" class="play" title="Play / Pause (or press spacebar)">▶️</button>
+      <button id="nextBtn" title="Next sentence">⏭</button>
+    </div>
+    <input type="range" class="scrub" id="scrub" min="0" max="0" value="0" step="1">
+    <div class="player-label" id="playerLabel">Oración 1 / 1</div>
+    <div class="speed-row">
+      <label for="speedSlider">Speed</label>
+      <input type="range" id="speedSlider" min="0.5" max="1.3" step="0.05" value="0.88">
+      <span class="val" id="speedVal">0.88x</span>
+    </div>
+    <div class="hint">Double-click a word to start reading from there · spacebar = play/pause</div>
+  </div>
+</div>
+
+<script>
+const PAGES = [
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "Un día caluroso",
+    "titleEn": "A Hot Day",
+    "sentences": [
+      {
+        "es": "Alicia está sentada junto al río.",
+        "words": [
+          "Alice",
+          "is",
+          "seated",
+          "next",
+          "to the",
+          "river"
+        ]
+      },
+      {
+        "es": "Hace mucho calor.",
+        "words": [
+          "Makes",
+          "a lot of",
+          "heat"
+        ]
+      },
+      {
+        "es": "Su hermana lee un libro.",
+        "words": [
+          "Her",
+          "sister",
+          "reads",
+          "a",
+          "book"
+        ]
+      },
+      {
+        "es": "El libro no tiene dibujos.",
+        "words": [
+          "The",
+          "book",
+          "not",
+          "has",
+          "pictures"
+        ]
+      },
+      {
+        "es": "Alicia piensa que eso es aburrido.",
+        "words": [
+          "Alice",
+          "thinks",
+          "that",
+          "that",
+          "is",
+          "boring"
+        ]
+      },
+      {
+        "es": "«Un libro sin dibujos no es bueno», piensa Alicia.",
+        "words": [
+          "A",
+          "book",
+          "without",
+          "pictures",
+          "not",
+          "is",
+          "good",
+          "thinks",
+          "Alice"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "El conejo blanco",
+    "titleEn": "The White Rabbit",
+    "sentences": [
+      {
+        "es": "De repente pasa un conejo blanco corriendo.",
+        "words": [
+          "Suddenly",
+          "(particle)",
+          "passes",
+          "a",
+          "rabbit",
+          "white",
+          "running"
+        ]
+      },
+      {
+        "es": "El conejo tiene los ojos rojos.",
+        "words": [
+          "The",
+          "rabbit",
+          "has",
+          "the",
+          "eyes",
+          "red"
+        ]
+      },
+      {
+        "es": "El conejo lleva un chaleco.",
+        "words": [
+          "The",
+          "rabbit",
+          "wears",
+          "a",
+          "waistcoat"
+        ]
+      },
+      {
+        "es": "En el chaleco hay un reloj.",
+        "words": [
+          "In",
+          "the",
+          "waistcoat",
+          "there is",
+          "a",
+          "watch"
+        ]
+      },
+      {
+        "es": "El conejo mira el reloj.",
+        "words": [
+          "The",
+          "rabbit",
+          "looks at",
+          "the",
+          "watch"
+        ]
+      },
+      {
+        "es": "«¡Ay no, voy tarde!», dice el conejo.",
+        "words": [
+          "Oh",
+          "no",
+          "I go",
+          "late",
+          "says",
+          "the",
+          "rabbit"
+        ]
+      },
+      {
+        "es": "Alicia está muy sorprendida.",
+        "words": [
+          "Alice",
+          "is",
+          "very",
+          "surprised"
+        ]
+      },
+      {
+        "es": "¿Un conejo con reloj? Eso es nuevo para ella.",
+        "words": [
+          "A",
+          "rabbit",
+          "with",
+          "watch",
+          "That",
+          "is",
+          "new",
+          "for",
+          "her"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "Alicia sigue al conejo",
+    "titleEn": "Alice Follows the Rabbit",
+    "sentences": [
+      {
+        "es": "Alicia se levanta rápido.",
+        "words": [
+          "Alice",
+          "(prefix)",
+          "gets up",
+          "quickly"
+        ]
+      },
+      {
+        "es": "Corre detrás del conejo.",
+        "words": [
+          "Runs",
+          "behind",
+          "of the",
+          "rabbit"
+        ]
+      },
+      {
+        "es": "El conejo corre hacia un hoyo.",
+        "words": [
+          "The",
+          "rabbit",
+          "runs",
+          "toward",
+          "a",
+          "hole"
+        ]
+      },
+      {
+        "es": "El hoyo está bajo un árbol.",
+        "words": [
+          "The",
+          "hole",
+          "is",
+          "under",
+          "a",
+          "tree"
+        ]
+      },
+      {
+        "es": "El conejo salta adentro enseguida.",
+        "words": [
+          "The",
+          "rabbit",
+          "jumps",
+          "inside",
+          "right away"
+        ]
+      },
+      {
+        "es": "Alicia piensa un momento.",
+        "words": [
+          "Alice",
+          "thinks",
+          "a",
+          "moment"
+        ]
+      },
+      {
+        "es": "Pero su curiosidad es muy grande.",
+        "words": [
+          "But",
+          "her",
+          "curiosity",
+          "is",
+          "very",
+          "big"
+        ]
+      },
+      {
+        "es": "Entonces Alicia también salta adentro.",
+        "words": [
+          "Then",
+          "Alice",
+          "also",
+          "jumps",
+          "inside"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "La caída larga",
+    "titleEn": "The Long Fall",
+    "sentences": [
+      {
+        "es": "El hoyo del conejo es muy profundo.",
+        "words": [
+          "The",
+          "hole",
+          "of the",
+          "rabbit",
+          "is",
+          "very",
+          "deep"
+        ]
+      },
+      {
+        "es": "Alicia cae y cae.",
+        "words": [
+          "Alice",
+          "falls",
+          "and",
+          "falls"
+        ]
+      },
+      {
+        "es": "Cae muy despacio.",
+        "words": [
+          "Falls",
+          "very",
+          "slowly"
+        ]
+      },
+      {
+        "es": "A su alrededor hay repisas.",
+        "words": [
+          "At",
+          "her",
+          "surroundings",
+          "there are",
+          "shelves"
+        ]
+      },
+      {
+        "es": "En las repisas hay frascos.",
+        "words": [
+          "On",
+          "the",
+          "shelves",
+          "there are",
+          "jars"
+        ]
+      },
+      {
+        "es": "Un frasco dice «Mermelada de naranja».",
+        "words": [
+          "A",
+          "jar",
+          "says",
+          "Marmalade",
+          "of",
+          "orange"
+        ]
+      },
+      {
+        "es": "Pero el frasco está vacío.",
+        "words": [
+          "But",
+          "the",
+          "jar",
+          "is",
+          "empty"
+        ]
+      },
+      {
+        "es": "Alicia sigue cayendo y cayendo.",
+        "words": [
+          "Alice",
+          "keeps",
+          "falling",
+          "and",
+          "falling"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "El salón de las puertas",
+    "titleEn": "The Hall of Doors",
+    "sentences": [
+      {
+        "es": "Por fin Alicia aterriza suavemente.",
+        "words": [
+          "At",
+          "last",
+          "Alice",
+          "lands",
+          "softly"
+        ]
+      },
+      {
+        "es": "Está sobre hojas secas.",
+        "words": [
+          "Is",
+          "on",
+          "leaves",
+          "dry"
+        ]
+      },
+      {
+        "es": "El conejo blanco ya no está.",
+        "words": [
+          "The",
+          "rabbit",
+          "white",
+          "already",
+          "not",
+          "is"
+        ]
+      },
+      {
+        "es": "Alicia está en un salón muy largo.",
+        "words": [
+          "Alice",
+          "is",
+          "in",
+          "a",
+          "hall",
+          "very",
+          "long"
+        ]
+      },
+      {
+        "es": "El salón tiene muchas puertas.",
+        "words": [
+          "The",
+          "hall",
+          "has",
+          "many",
+          "doors"
+        ]
+      },
+      {
+        "es": "Pero todas las puertas están cerradas.",
+        "words": [
+          "But",
+          "all",
+          "the",
+          "doors",
+          "are",
+          "closed"
+        ]
+      },
+      {
+        "es": "Alicia prueba cada puerta.",
+        "words": [
+          "Alice",
+          "tries",
+          "each",
+          "door"
+        ]
+      },
+      {
+        "es": "Ninguna puerta se abre.",
+        "words": [
+          "No",
+          "door",
+          "(prefix)",
+          "opens"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "La llave dorada",
+    "titleEn": "The Golden Key",
+    "sentences": [
+      {
+        "es": "En el centro hay una mesa de cristal.",
+        "words": [
+          "In",
+          "the",
+          "center",
+          "there is",
+          "a",
+          "table",
+          "of",
+          "glass"
+        ]
+      },
+      {
+        "es": "Sobre la mesa hay una llave pequeña.",
+        "words": [
+          "On",
+          "the",
+          "table",
+          "there is",
+          "a",
+          "key",
+          "small"
+        ]
+      },
+      {
+        "es": "La llave es de oro.",
+        "words": [
+          "The",
+          "key",
+          "is",
+          "of",
+          "gold"
+        ]
+      },
+      {
+        "es": "Alicia ve una puertita muy chica.",
+        "words": [
+          "Alice",
+          "sees",
+          "a",
+          "little door",
+          "very",
+          "small"
+        ]
+      },
+      {
+        "es": "La puerta está detrás de una cortina.",
+        "words": [
+          "The",
+          "door",
+          "is",
+          "behind",
+          "of",
+          "a",
+          "curtain"
+        ]
+      },
+      {
+        "es": "¡La llave sí entra en esa puerta!",
+        "words": [
+          "The",
+          "key",
+          "indeed",
+          "enters",
+          "in",
+          "that",
+          "door"
+        ]
+      },
+      {
+        "es": "Pero la puerta es muy chica para Alicia.",
+        "words": [
+          "But",
+          "the",
+          "door",
+          "is",
+          "very",
+          "small",
+          "for",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Por la puerta, Alicia ve un jardín hermoso.",
+        "words": [
+          "Through",
+          "the",
+          "door",
+          "Alice",
+          "sees",
+          "a",
+          "garden",
+          "beautiful"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "Bébeme",
+    "titleEn": "Drink Me",
+    "sentences": [
+      {
+        "es": "Alicia regresa a la mesa.",
+        "words": [
+          "Alice",
+          "returns",
+          "to",
+          "the",
+          "table"
+        ]
+      },
+      {
+        "es": "Ahora hay una botella pequeña.",
+        "words": [
+          "Now",
+          "there is",
+          "a",
+          "bottle",
+          "small"
+        ]
+      },
+      {
+        "es": "En la botella dice «BÉBEME».",
+        "words": [
+          "On",
+          "the",
+          "bottle",
+          "says",
+          "DRINK ME"
+        ]
+      },
+      {
+        "es": "Alicia tiene mucho cuidado.",
+        "words": [
+          "Alice",
+          "has",
+          "much",
+          "care"
+        ]
+      },
+      {
+        "es": "Primero busca si dice «Veneno».",
+        "words": [
+          "First",
+          "looks",
+          "if",
+          "says",
+          "Poison"
+        ]
+      },
+      {
+        "es": "No dice «Veneno» por ningún lado.",
+        "words": [
+          "Not",
+          "says",
+          "Poison",
+          "by",
+          "no",
+          "side"
+        ]
+      },
+      {
+        "es": "Entonces Alicia bebe un poco.",
+        "words": [
+          "Then",
+          "Alice",
+          "drinks",
+          "a",
+          "little"
+        ]
+      },
+      {
+        "es": "El sabor es como pastel y piña.",
+        "words": [
+          "The",
+          "taste",
+          "is",
+          "like",
+          "cake",
+          "and",
+          "pineapple"
+        ]
+      },
+      {
+        "es": "¡Alicia se hace cada vez más chica!",
+        "words": [
+          "Alice",
+          "(prefix)",
+          "becomes",
+          "each",
+          "time",
+          "more",
+          "small"
+        ]
+      },
+      {
+        "es": "Ahora mide solo veinticinco centímetros.",
+        "words": [
+          "Now",
+          "measures",
+          "only",
+          "twenty-five",
+          "centimeters"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "El pastel",
+    "titleEn": "The Cake",
+    "sentences": [
+      {
+        "es": "Ahora Alicia sí cabe por la puertita.",
+        "words": [
+          "Now",
+          "Alice",
+          "indeed",
+          "fits",
+          "through",
+          "the",
+          "little door"
+        ]
+      },
+      {
+        "es": "¡Pero la llave sigue arriba en la mesa!",
+        "words": [
+          "But",
+          "the",
+          "key",
+          "still",
+          "up",
+          "on",
+          "the",
+          "table"
+        ]
+      },
+      {
+        "es": "Alicia es muy chica para alcanzarla.",
+        "words": [
+          "Alice",
+          "is",
+          "too",
+          "small",
+          "to",
+          "reach it"
+        ]
+      },
+      {
+        "es": "Ve una caja de pastel bajo la mesa.",
+        "words": [
+          "Sees",
+          "a",
+          "box",
+          "of",
+          "cake",
+          "under",
+          "the",
+          "table"
+        ]
+      },
+      {
+        "es": "En el pastel dice «CÓMEME».",
+        "words": [
+          "On",
+          "the",
+          "cake",
+          "says",
+          "EAT ME"
+        ]
+      },
+      {
+        "es": "Alicia come un pedazo.",
+        "words": [
+          "Alice",
+          "eats",
+          "a",
+          "piece"
+        ]
+      },
+      {
+        "es": "¡De inmediato se hace enorme!",
+        "words": [
+          "Immediately",
+          "(particle)",
+          "(prefix)",
+          "becomes",
+          "huge"
+        ]
+      },
+      {
+        "es": "Su cabeza toca el techo.",
+        "words": [
+          "Her",
+          "head",
+          "touches",
+          "the",
+          "ceiling"
+        ]
+      },
+      {
+        "es": "«Ay no», dice Alicia, «ahora todo está mal».",
+        "words": [
+          "Oh",
+          "no",
+          "says",
+          "Alice",
+          "now",
+          "everything",
+          "is",
+          "wrong"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 1,
+    "chapterTitle": "Capítulo 1: Bajo la Tierra",
+    "title": "Las lágrimas de Alicia",
+    "titleEn": "Alice's Tears",
+    "sentences": [
+      {
+        "es": "Alicia ahora mide casi tres metros.",
+        "words": [
+          "Alice",
+          "now",
+          "measures",
+          "almost",
+          "three",
+          "meters"
+        ]
+      },
+      {
+        "es": "Ya no cabe por la puerta.",
+        "words": [
+          "Already",
+          "not",
+          "fits",
+          "through",
+          "the",
+          "door"
+        ]
+      },
+      {
+        "es": "Alicia está triste y tiene miedo.",
+        "words": [
+          "Alice",
+          "is",
+          "sad",
+          "and",
+          "has",
+          "fear"
+        ]
+      },
+      {
+        "es": "Empieza a llorar.",
+        "words": [
+          "Begins",
+          "to",
+          "cry"
+        ]
+      },
+      {
+        "es": "Sus lágrimas son enormes.",
+        "words": [
+          "Her",
+          "tears",
+          "are",
+          "enormous"
+        ]
+      },
+      {
+        "es": "Caen como lluvia al suelo.",
+        "words": [
+          "Fall",
+          "like",
+          "rain",
+          "to the",
+          "ground"
+        ]
+      },
+      {
+        "es": "«Una persona tan grande no debe llorar», se dice Alicia.",
+        "words": [
+          "A",
+          "person",
+          "so",
+          "big",
+          "not",
+          "should",
+          "cry",
+          "(prefix)",
+          "says",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Pero sigue llorando de todos modos.",
+        "words": [
+          "But",
+          "keeps",
+          "crying",
+          "of",
+          "all",
+          "ways"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "chapterTitle": "Capítulo 2: El Mar de Lágrimas",
+    "title": "El abanico",
+    "titleEn": "The Fan",
+    "sentences": [
+      {
+        "es": "De repente Alicia ve al conejo blanco.",
+        "words": [
+          "Suddenly",
+          "Alice",
+          "sees",
+          "(marker)",
+          "the",
+          "rabbit",
+          "white"
+        ]
+      },
+      {
+        "es": "Regresa y trae guantes.",
+        "words": [
+          "Returns",
+          "and",
+          "brings",
+          "gloves"
+        ]
+      },
+      {
+        "es": "También trae un abanico pequeño.",
+        "words": [
+          "Also",
+          "brings",
+          "a",
+          "fan",
+          "small"
+        ]
+      },
+      {
+        "es": "El conejo tiene mucha prisa.",
+        "words": [
+          "The",
+          "rabbit",
+          "has",
+          "much",
+          "hurry"
+        ]
+      },
+      {
+        "es": "Se le cae el abanico.",
+        "words": [
+          "(prefix)",
+          "to him",
+          "falls",
+          "the",
+          "fan"
+        ]
+      },
+      {
+        "es": "Alicia recoge el abanico.",
+        "words": [
+          "Alice",
+          "picks up",
+          "the",
+          "fan"
+        ]
+      },
+      {
+        "es": "Se abanica un poco.",
+        "words": [
+          "(prefix)",
+          "fans",
+          "a",
+          "little"
+        ]
+      },
+      {
+        "es": "¡De repente Alicia se hace chica otra vez!",
+        "words": [
+          "Suddenly",
+          "(particle)",
+          "Alice",
+          "(prefix)",
+          "becomes",
+          "small",
+          "another",
+          "time"
+        ]
+      },
+      {
+        "es": "Alicia suelta el abanico rápido.",
+        "words": [
+          "Alice",
+          "drops",
+          "the",
+          "fan",
+          "quickly"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "chapterTitle": "Capítulo 2: El Mar de Lágrimas",
+    "title": "En su propio mar de lágrimas",
+    "titleEn": "In Her Own Sea of Tears",
+    "sentences": [
+      {
+        "es": "Ahora Alicia es diminuta.",
+        "words": [
+          "Now",
+          "Alice",
+          "is",
+          "tiny"
+        ]
+      },
+      {
+        "es": "Está justo frente a sus propias lágrimas.",
+        "words": [
+          "Is",
+          "right",
+          "in front of",
+          "(marker)",
+          "her",
+          "own",
+          "tears"
+        ]
+      },
+      {
+        "es": "Las lágrimas forman un lago grande.",
+        "words": [
+          "The",
+          "tears",
+          "form",
+          "a",
+          "lake",
+          "big"
+        ]
+      },
+      {
+        "es": "Alicia resbala y cae adentro.",
+        "words": [
+          "Alice",
+          "slips",
+          "and",
+          "falls",
+          "inside"
+        ]
+      },
+      {
+        "es": "El agua está profunda y salada.",
+        "words": [
+          "The",
+          "water",
+          "is",
+          "deep",
+          "and",
+          "salty"
+        ]
+      },
+      {
+        "es": "«Ahora nado en mi propio mar de lágrimas», piensa Alicia.",
+        "words": [
+          "Now",
+          "I swim",
+          "in",
+          "my",
+          "own",
+          "sea",
+          "of",
+          "tears",
+          "thinks",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Le parece muy raro.",
+        "words": [
+          "To her",
+          "seems",
+          "very",
+          "strange"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "chapterTitle": "Capítulo 2: El Mar de Lágrimas",
+    "title": "El ratón",
+    "titleEn": "The Mouse",
+    "sentences": [
+      {
+        "es": "En el agua también nada un ratón.",
+        "words": [
+          "In",
+          "the",
+          "water",
+          "also",
+          "swims",
+          "a",
+          "mouse"
+        ]
+      },
+      {
+        "es": "Alicia quiere ser cortés.",
+        "words": [
+          "Alice",
+          "wants",
+          "to be",
+          "polite"
+        ]
+      },
+      {
+        "es": "Le pregunta: «¿Dónde está mi gato?»",
+        "words": [
+          "To it",
+          "asks",
+          "Where",
+          "is",
+          "my",
+          "cat"
+        ]
+      },
+      {
+        "es": "El ratón siente mucho miedo.",
+        "words": [
+          "The",
+          "mouse",
+          "feels",
+          "much",
+          "fear"
+        ]
+      },
+      {
+        "es": "¡A los ratones no les gustan los gatos!",
+        "words": [
+          "To",
+          "the",
+          "mice",
+          "not",
+          "to them",
+          "please",
+          "the",
+          "cats"
+        ]
+      },
+      {
+        "es": "«Perdón», dice Alicia rápido.",
+        "words": [
+          "Sorry",
+          "says",
+          "Alice",
+          "quickly"
+        ]
+      },
+      {
+        "es": "«No quería asustarte.»",
+        "words": [
+          "Not",
+          "I wanted",
+          "to scare you"
+        ]
+      },
+      {
+        "es": "El ratón se calma poco a poco.",
+        "words": [
+          "The",
+          "mouse",
+          "(prefix)",
+          "calms",
+          "little",
+          "by",
+          "little"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "chapterTitle": "Capítulo 2: El Mar de Lágrimas",
+    "title": "Hacia la orilla",
+    "titleEn": "To the Shore",
+    "sentences": [
+      {
+        "es": "Pronto nadan más animales en el agua.",
+        "words": [
+          "Soon",
+          "swim",
+          "more",
+          "animals",
+          "in",
+          "the",
+          "water"
+        ]
+      },
+      {
+        "es": "Un pato, un dodo y un loro están ahí.",
+        "words": [
+          "A",
+          "duck",
+          "a",
+          "dodo",
+          "and",
+          "a",
+          "parrot",
+          "are",
+          "there"
+        ]
+      },
+      {
+        "es": "Todos nadan juntos hacia la orilla.",
+        "words": [
+          "All",
+          "swim",
+          "together",
+          "toward",
+          "the",
+          "shore"
+        ]
+      },
+      {
+        "es": "En la orilla todos están empapados.",
+        "words": [
+          "On",
+          "the",
+          "shore",
+          "all",
+          "are",
+          "soaked"
+        ]
+      },
+      {
+        "es": "«¿Cómo nos secamos ahora?», pregunta alguien.",
+        "words": [
+          "How",
+          "ourselves",
+          "dry",
+          "now",
+          "asks",
+          "someone"
+        ]
+      },
+      {
+        "es": "Nadie sabe una buena respuesta.",
+        "words": [
+          "Nobody",
+          "knows",
+          "a",
+          "good",
+          "answer"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "chapterTitle": "Capítulo 3: La Carrera Loca",
+    "title": "La carrera rara",
+    "titleEn": "The Strange Race",
+    "sentences": [
+      {
+        "es": "El dodo tiene una idea.",
+        "words": [
+          "The",
+          "dodo",
+          "has",
+          "an",
+          "idea"
+        ]
+      },
+      {
+        "es": "«¡Vamos a hacer una carrera!», dice.",
+        "words": [
+          "We go",
+          "to",
+          "to make",
+          "a",
+          "race",
+          "says"
+        ]
+      },
+      {
+        "es": "Todos los animales corren en círculo.",
+        "words": [
+          "All",
+          "the",
+          "animals",
+          "run",
+          "in",
+          "circle"
+        ]
+      },
+      {
+        "es": "No hay una salida clara.",
+        "words": [
+          "Not",
+          "there is",
+          "a",
+          "start",
+          "clear"
+        ]
+      },
+      {
+        "es": "Tampoco hay una meta clara.",
+        "words": [
+          "Neither",
+          "there is",
+          "a",
+          "finish line",
+          "clear"
+        ]
+      },
+      {
+        "es": "Después de un rato el dodo grita: «¡Alto!»",
+        "words": [
+          "After",
+          "of",
+          "a",
+          "while",
+          "the",
+          "dodo",
+          "shouts",
+          "Stop"
+        ]
+      },
+      {
+        "es": "«¿Quién ganó?», preguntan todos.",
+        "words": [
+          "Who",
+          "won",
+          "ask",
+          "all"
+        ]
+      },
+      {
+        "es": "«Todos ganaron», dice el dodo.",
+        "words": [
+          "All",
+          "won",
+          "says",
+          "the",
+          "dodo"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "chapterTitle": "Capítulo 3: La Carrera Loca",
+    "title": "Los premios",
+    "titleEn": "The Prizes",
+    "sentences": [
+      {
+        "es": "Ahora todos necesitan un premio.",
+        "words": [
+          "Now",
+          "all",
+          "need",
+          "a",
+          "prize"
+        ]
+      },
+      {
+        "es": "Pero no hay premios.",
+        "words": [
+          "But",
+          "not",
+          "there are",
+          "prizes"
+        ]
+      },
+      {
+        "es": "Alicia todavía tiene dulces en la bolsa.",
+        "words": [
+          "Alice",
+          "still",
+          "has",
+          "candies",
+          "in",
+          "the",
+          "bag"
+        ]
+      },
+      {
+        "es": "Le da un dulce a cada animal.",
+        "words": [
+          "To it",
+          "gives",
+          "a",
+          "candy",
+          "to",
+          "each",
+          "animal"
+        ]
+      },
+      {
+        "es": "Para Alicia misma no queda ningún dulce.",
+        "words": [
+          "For",
+          "Alice",
+          "herself",
+          "not",
+          "remains",
+          "any",
+          "candy"
+        ]
+      },
+      {
+        "es": "«Pero tú también necesitas un premio», dice el dodo.",
+        "words": [
+          "But",
+          "you",
+          "also",
+          "need",
+          "a",
+          "prize",
+          "says",
+          "the",
+          "dodo"
+        ]
+      },
+      {
+        "es": "Alicia todavía tiene un dedal pequeño.",
+        "words": [
+          "Alice",
+          "still",
+          "has",
+          "a",
+          "thimble",
+          "small"
+        ]
+      },
+      {
+        "es": "El dodo le regresa su propio dedal.",
+        "words": [
+          "The",
+          "dodo",
+          "to her",
+          "returns",
+          "her",
+          "own",
+          "thimble"
+        ]
+      },
+      {
+        "es": "Todos piensan que eso es muy chistoso.",
+        "words": [
+          "All",
+          "think",
+          "that",
+          "that",
+          "is",
+          "very",
+          "funny"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "chapterTitle": "Capítulo 3: La Carrera Loca",
+    "title": "La historia triste",
+    "titleEn": "The Sad Tale",
+    "sentences": [
+      {
+        "es": "El ratón quiere contar una historia.",
+        "words": [
+          "The",
+          "mouse",
+          "wants",
+          "to tell",
+          "a",
+          "story"
+        ]
+      },
+      {
+        "es": "«Es una historia muy larga y triste», dice.",
+        "words": [
+          "Is",
+          "a",
+          "story",
+          "very",
+          "long",
+          "and",
+          "sad",
+          "says"
+        ]
+      },
+      {
+        "es": "Alicia escucha, pero piensa en otra cosa.",
+        "words": [
+          "Alice",
+          "listens",
+          "but",
+          "thinks",
+          "about",
+          "other",
+          "thing"
+        ]
+      },
+      {
+        "es": "Piensa en la cola del ratón.",
+        "words": [
+          "Thinks",
+          "about",
+          "the",
+          "tail",
+          "of the",
+          "mouse"
+        ]
+      },
+      {
+        "es": "La historia le suena como una cola larga.",
+        "words": [
+          "The",
+          "story",
+          "to her",
+          "sounds",
+          "like",
+          "a",
+          "tail",
+          "long"
+        ]
+      },
+      {
+        "es": "El ratón nota que Alicia no escucha.",
+        "words": [
+          "The",
+          "mouse",
+          "notices",
+          "that",
+          "Alice",
+          "not",
+          "listens"
+        ]
+      },
+      {
+        "es": "El ratón se enoja y se va nadando.",
+        "words": [
+          "The",
+          "mouse",
+          "(prefix)",
+          "gets angry",
+          "and",
+          "(prefix)",
+          "goes",
+          "swimming"
+        ]
+      },
+      {
+        "es": "«No quería eso», dice Alicia triste.",
+        "words": [
+          "Not",
+          "I wanted",
+          "that",
+          "says",
+          "Alice",
+          "sadly"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "chapterTitle": "Capítulo 4: El Conejo Manda a un Pequeño Bill",
+    "title": "María Ana",
+    "titleEn": "Mary Ann",
+    "sentences": [
+      {
+        "es": "El conejo blanco vuelve a pasar.",
+        "words": [
+          "The",
+          "rabbit",
+          "white",
+          "comes back",
+          "to",
+          "pass"
+        ]
+      },
+      {
+        "es": "Busca sus guantes y su abanico.",
+        "words": [
+          "Searches",
+          "his",
+          "gloves",
+          "and",
+          "his",
+          "fan"
+        ]
+      },
+      {
+        "es": "Ve a Alicia y la confunde con su sirvienta.",
+        "words": [
+          "Sees",
+          "(marker)",
+          "Alice",
+          "and",
+          "her",
+          "confuses",
+          "with",
+          "his",
+          "servant"
+        ]
+      },
+      {
+        "es": "«¡María Ana, tráeme mis guantes ahora mismo!», grita.",
+        "words": [
+          "Mary",
+          "Ann",
+          "bring me",
+          "my",
+          "gloves",
+          "now",
+          "itself",
+          "shouts"
+        ]
+      },
+      {
+        "es": "Alicia está confundida, pero obedece.",
+        "words": [
+          "Alice",
+          "is",
+          "confused",
+          "but",
+          "obeys"
+        ]
+      },
+      {
+        "es": "Encuentra una casa pequeña y ordenada.",
+        "words": [
+          "Finds",
+          "a",
+          "house",
+          "small",
+          "and",
+          "tidy"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "chapterTitle": "Capítulo 4: El Conejo Manda a un Pequeño Bill",
+    "title": "Grande otra vez",
+    "titleEn": "Big Again",
+    "sentences": [
+      {
+        "es": "Dentro de la casa hay una botella pequeña.",
+        "words": [
+          "Inside",
+          "of",
+          "the",
+          "house",
+          "there is",
+          "a",
+          "bottle",
+          "small"
+        ]
+      },
+      {
+        "es": "Esta vez no dice «Bébeme».",
+        "words": [
+          "This",
+          "time",
+          "not",
+          "says",
+          "Drink Me"
+        ]
+      },
+      {
+        "es": "Pero Alicia tiene curiosidad y bebe de todos modos.",
+        "words": [
+          "But",
+          "Alice",
+          "has",
+          "curiosity",
+          "and",
+          "drinks",
+          "of",
+          "all",
+          "ways"
+        ]
+      },
+      {
+        "es": "¡De inmediato se hace enorme otra vez!",
+        "words": [
+          "Immediately",
+          "(particle)",
+          "(prefix)",
+          "becomes",
+          "huge",
+          "another",
+          "time"
+        ]
+      },
+      {
+        "es": "Su brazo sale solo por la ventana.",
+        "words": [
+          "Her",
+          "arm",
+          "exits",
+          "only",
+          "through",
+          "the",
+          "window"
+        ]
+      },
+      {
+        "es": "Su pie entra solo en la chimenea.",
+        "words": [
+          "Her",
+          "foot",
+          "enters",
+          "only",
+          "in",
+          "the",
+          "chimney"
+        ]
+      },
+      {
+        "es": "Alicia queda completamente atorada en la casa.",
+        "words": [
+          "Alice",
+          "remains",
+          "completely",
+          "stuck",
+          "in",
+          "the",
+          "house"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "chapterTitle": "Capítulo 4: El Conejo Manda a un Pequeño Bill",
+    "title": "Alboroto afuera",
+    "titleEn": "Commotion Outside",
+    "sentences": [
+      {
+        "es": "Afuera, el conejo blanco está en pánico.",
+        "words": [
+          "Outside",
+          "the",
+          "rabbit",
+          "white",
+          "is",
+          "in",
+          "panic"
+        ]
+      },
+      {
+        "es": "También llega un jardinero llamado Pat.",
+        "words": [
+          "Also",
+          "arrives",
+          "a",
+          "gardener",
+          "named",
+          "Pat"
+        ]
+      },
+      {
+        "es": "No saben qué hay dentro de la casa.",
+        "words": [
+          "Not",
+          "know",
+          "what",
+          "there is",
+          "inside",
+          "of",
+          "the",
+          "house"
+        ]
+      },
+      {
+        "es": "Alguien avienta piedritas por la ventana.",
+        "words": [
+          "Someone",
+          "throws",
+          "little stones",
+          "through",
+          "the",
+          "window"
+        ]
+      },
+      {
+        "es": "¡Las piedritas se convierten en pastelitos!",
+        "words": [
+          "The",
+          "little stones",
+          "(prefix)",
+          "turn",
+          "into",
+          "little cakes"
+        ]
+      },
+      {
+        "es": "Caen justo frente a Alicia.",
+        "words": [
+          "Fall",
+          "right",
+          "in front of",
+          "(marker)",
+          "Alice"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "chapterTitle": "Capítulo 4: El Conejo Manda a un Pequeño Bill",
+    "title": "La huida",
+    "titleEn": "The Escape",
+    "sentences": [
+      {
+        "es": "Alicia come uno de los pastelitos.",
+        "words": [
+          "Alice",
+          "eats",
+          "one",
+          "of",
+          "the",
+          "little cakes"
+        ]
+      },
+      {
+        "es": "De inmediato se hace chica otra vez.",
+        "words": [
+          "Immediately",
+          "(particle)",
+          "(prefix)",
+          "becomes",
+          "small",
+          "another",
+          "time"
+        ]
+      },
+      {
+        "es": "Sale corriendo de la casa rápido.",
+        "words": [
+          "Exits",
+          "running",
+          "of",
+          "the",
+          "house",
+          "quickly"
+        ]
+      },
+      {
+        "es": "Afuera, muchos animales corren detrás de ella.",
+        "words": [
+          "Outside",
+          "many",
+          "animals",
+          "run",
+          "behind",
+          "of",
+          "her"
+        ]
+      },
+      {
+        "es": "Alicia corre rápido hacia el bosque.",
+        "words": [
+          "Alice",
+          "runs",
+          "quickly",
+          "toward",
+          "the",
+          "forest"
+        ]
+      },
+      {
+        "es": "Ahí por fin está sola otra vez.",
+        "words": [
+          "There",
+          "at",
+          "last",
+          "is",
+          "alone",
+          "another",
+          "time"
+        ]
+      },
+      {
+        "es": "«Ahora necesito hacer un plan», piensa Alicia.",
+        "words": [
+          "Now",
+          "I need",
+          "to make",
+          "a",
+          "plan",
+          "thinks",
+          "Alice"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 5,
+    "chapterTitle": "Capítulo 5: Consejos de una Oruga",
+    "title": "¿Quién eres tú?",
+    "titleEn": "Who Are You?",
+    "sentences": [
+      {
+        "es": "En el bosque, Alicia ve un hongo grande.",
+        "words": [
+          "In",
+          "the",
+          "forest",
+          "Alice",
+          "sees",
+          "a",
+          "mushroom",
+          "big"
+        ]
+      },
+      {
+        "es": "Sobre el hongo está sentada una oruga.",
+        "words": [
+          "On",
+          "the",
+          "mushroom",
+          "is",
+          "seated",
+          "a",
+          "caterpillar"
+        ]
+      },
+      {
+        "es": "La oruga fuma una pipa larga.",
+        "words": [
+          "The",
+          "caterpillar",
+          "smokes",
+          "a",
+          "pipe",
+          "long"
+        ]
+      },
+      {
+        "es": "«¿Quién eres tú?», pregunta la oruga, seria.",
+        "words": [
+          "Who",
+          "are",
+          "you",
+          "asks",
+          "the",
+          "caterpillar",
+          "serious"
+        ]
+      },
+      {
+        "es": "Alicia ya no sabe la respuesta exacta.",
+        "words": [
+          "Alice",
+          "already",
+          "not",
+          "knows",
+          "the",
+          "answer",
+          "exact"
+        ]
+      },
+      {
+        "es": "Hoy ha sido de tantos tamaños diferentes.",
+        "words": [
+          "Today",
+          "has",
+          "been",
+          "of",
+          "so many",
+          "sizes",
+          "different"
+        ]
+      },
+      {
+        "es": "«Ya no soy yo misma», dice Alicia triste.",
+        "words": [
+          "Already",
+          "not",
+          "am",
+          "I",
+          "myself",
+          "says",
+          "Alice",
+          "sadly"
+        ]
+      },
+      {
+        "es": "La oruga no entiende eso.",
+        "words": [
+          "The",
+          "caterpillar",
+          "not",
+          "understands",
+          "that"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 5,
+    "chapterTitle": "Capítulo 5: Consejos de una Oruga",
+    "title": "El hongo mágico",
+    "titleEn": "The Magic Mushroom",
+    "sentences": [
+      {
+        "es": "La oruga le da un buen consejo a Alicia.",
+        "words": [
+          "The",
+          "caterpillar",
+          "to her",
+          "gives",
+          "a",
+          "good",
+          "advice",
+          "to",
+          "Alice"
+        ]
+      },
+      {
+        "es": "«Un lado te hace grande», dice la oruga.",
+        "words": [
+          "One",
+          "side",
+          "to you",
+          "makes",
+          "big",
+          "says",
+          "the",
+          "caterpillar"
+        ]
+      },
+      {
+        "es": "«El otro lado te hace chica.»",
+        "words": [
+          "The",
+          "other",
+          "side",
+          "to you",
+          "makes",
+          "small"
+        ]
+      },
+      {
+        "es": "¿Pero cuál lado es cuál?",
+        "words": [
+          "But",
+          "which",
+          "side",
+          "is",
+          "which"
+        ]
+      },
+      {
+        "es": "La oruga no lo dice exactamente.",
+        "words": [
+          "The",
+          "caterpillar",
+          "not",
+          "it",
+          "says",
+          "exactly"
+        ]
+      },
+      {
+        "es": "Alicia arranca dos pedazos del hongo.",
+        "words": [
+          "Alice",
+          "tears off",
+          "two",
+          "pieces",
+          "of the",
+          "mushroom"
+        ]
+      },
+      {
+        "es": "Un pedazo en cada mano.",
+        "words": [
+          "A",
+          "piece",
+          "in",
+          "each",
+          "hand"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 5,
+    "chapterTitle": "Capítulo 5: Consejos de una Oruga",
+    "title": "El cuello largo",
+    "titleEn": "The Long Neck",
+    "sentences": [
+      {
+        "es": "Alicia prueba primero el pedazo derecho.",
+        "words": [
+          "Alice",
+          "tries",
+          "first",
+          "the",
+          "piece",
+          "right"
+        ]
+      },
+      {
+        "es": "¡Su barbilla toca su pie de repente!",
+        "words": [
+          "Her",
+          "chin",
+          "touches",
+          "her",
+          "foot",
+          "suddenly",
+          "(particle)"
+        ]
+      },
+      {
+        "es": "Rápido come del pedazo izquierdo.",
+        "words": [
+          "Quickly",
+          "eats",
+          "of the",
+          "piece",
+          "left"
+        ]
+      },
+      {
+        "es": "Ahora su cuello se hace muy, muy largo.",
+        "words": [
+          "Now",
+          "her",
+          "neck",
+          "(prefix)",
+          "becomes",
+          "very",
+          "very",
+          "long"
+        ]
+      },
+      {
+        "es": "Su cabeza queda muy alta sobre los árboles.",
+        "words": [
+          "Her",
+          "head",
+          "remains",
+          "very",
+          "high",
+          "above",
+          "the",
+          "trees"
+        ]
+      },
+      {
+        "es": "¡Un pájaro la confunde con una serpiente!",
+        "words": [
+          "A",
+          "bird",
+          "her",
+          "confuses",
+          "with",
+          "a",
+          "snake"
+        ]
+      },
+      {
+        "es": "«¡Vete, serpiente!», grita el pájaro.",
+        "words": [
+          "Go away",
+          "snake",
+          "shouts",
+          "the",
+          "bird"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 5,
+    "chapterTitle": "Capítulo 5: Consejos de una Oruga",
+    "title": "Normal otra vez",
+    "titleEn": "Back to Normal",
+    "sentences": [
+      {
+        "es": "Alicia prueba mordidas pequeñas con cuidado.",
+        "words": [
+          "Alice",
+          "tries",
+          "bites",
+          "small",
+          "with",
+          "care"
+        ]
+      },
+      {
+        "es": "A veces del pedazo derecho, a veces del izquierdo.",
+        "words": [
+          "At",
+          "times",
+          "of the",
+          "piece",
+          "right",
+          "at",
+          "times",
+          "of the",
+          "left"
+        ]
+      },
+      {
+        "es": "Poco a poco vuelve a su tamaño normal.",
+        "words": [
+          "Little",
+          "by",
+          "little",
+          "returns",
+          "to",
+          "her",
+          "size",
+          "normal"
+        ]
+      },
+      {
+        "es": "«¡Por fin!», dice Alicia feliz.",
+        "words": [
+          "At",
+          "last",
+          "says",
+          "Alice",
+          "happily"
+        ]
+      },
+      {
+        "es": "Guarda los pedazos que sobran del hongo.",
+        "words": [
+          "Saves",
+          "the",
+          "pieces",
+          "that",
+          "remain",
+          "of the",
+          "mushroom"
+        ]
+      },
+      {
+        "es": "«Pueden ser útiles después», piensa.",
+        "words": [
+          "Can",
+          "be",
+          "useful",
+          "later",
+          "thinks"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 6,
+    "chapterTitle": "Capítulo 6: Cerdo y Pimienta",
+    "title": "La casa en el bosque",
+    "titleEn": "The House in the Woods",
+    "sentences": [
+      {
+        "es": "Alicia encuentra una casa pequeña en el bosque.",
+        "words": [
+          "Alice",
+          "finds",
+          "a",
+          "house",
+          "small",
+          "in",
+          "the",
+          "forest"
+        ]
+      },
+      {
+        "es": "Un lacayo pez trae una carta a la puerta.",
+        "words": [
+          "A",
+          "footman",
+          "fish",
+          "brings",
+          "a",
+          "letter",
+          "to",
+          "the",
+          "door"
+        ]
+      },
+      {
+        "es": "Un lacayo rana abre la puerta.",
+        "words": [
+          "A",
+          "footman",
+          "frog",
+          "opens",
+          "the",
+          "door"
+        ]
+      },
+      {
+        "es": "La carta es una invitación de la reina.",
+        "words": [
+          "The",
+          "letter",
+          "is",
+          "an",
+          "invitation",
+          "from",
+          "the",
+          "queen"
+        ]
+      },
+      {
+        "es": "Alicia entra a la casa sin más.",
+        "words": [
+          "Alice",
+          "enters",
+          "(marker)",
+          "the",
+          "house",
+          "without",
+          "more"
+        ]
+      },
+      {
+        "es": "Adentro hay mucho ruido.",
+        "words": [
+          "Inside",
+          "there is",
+          "much",
+          "noise"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 6,
+    "chapterTitle": "Capítulo 6: Cerdo y Pimienta",
+    "title": "La cocina loca",
+    "titleEn": "The Crazy Kitchen",
+    "sentences": [
+      {
+        "es": "En la cocina hay pimienta por todos lados.",
+        "words": [
+          "In",
+          "the",
+          "kitchen",
+          "there is",
+          "pepper",
+          "by",
+          "all",
+          "sides"
+        ]
+      },
+      {
+        "es": "Todos tienen que estornudar todo el tiempo.",
+        "words": [
+          "All",
+          "have",
+          "to",
+          "to sneeze",
+          "all",
+          "the",
+          "time"
+        ]
+      },
+      {
+        "es": "La duquesa carga a un bebé que llora.",
+        "words": [
+          "The",
+          "duchess",
+          "carries",
+          "(marker)",
+          "a",
+          "baby",
+          "that",
+          "cries"
+        ]
+      },
+      {
+        "es": "La cocinera avienta ollas por la cocina.",
+        "words": [
+          "The",
+          "cook",
+          "throws",
+          "pots",
+          "through",
+          "the",
+          "kitchen"
+        ]
+      },
+      {
+        "es": "Solo la cocinera y un gato no estornudan.",
+        "words": [
+          "Only",
+          "the",
+          "cook",
+          "and",
+          "a",
+          "cat",
+          "not",
+          "sneeze"
+        ]
+      },
+      {
+        "es": "El gato sonríe todo el tiempo.",
+        "words": [
+          "The",
+          "cat",
+          "smiles",
+          "all",
+          "the",
+          "time"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 6,
+    "chapterTitle": "Capítulo 6: Cerdo y Pimienta",
+    "title": "El bebé se vuelve cerdo",
+    "titleEn": "The Baby Becomes a Pig",
+    "sentences": [
+      {
+        "es": "La duquesa de repente le avienta el bebé a Alicia.",
+        "words": [
+          "The",
+          "duchess",
+          "suddenly",
+          "(particle)",
+          "to her",
+          "throws",
+          "the",
+          "baby",
+          "to",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Alicia carga al bebé hacia afuera.",
+        "words": [
+          "Alice",
+          "carries",
+          "to the",
+          "baby",
+          "toward",
+          "outside"
+        ]
+      },
+      {
+        "es": "El bebé hace ruidos extraños.",
+        "words": [
+          "The",
+          "baby",
+          "makes",
+          "noises",
+          "strange"
+        ]
+      },
+      {
+        "es": "Su nariz se hace cada vez más redonda.",
+        "words": [
+          "Its",
+          "nose",
+          "(prefix)",
+          "becomes",
+          "each",
+          "time",
+          "more",
+          "round"
+        ]
+      },
+      {
+        "es": "¡De repente ya no es un bebé!",
+        "words": [
+          "Suddenly",
+          "(particle)",
+          "already",
+          "not",
+          "is",
+          "a",
+          "baby"
+        ]
+      },
+      {
+        "es": "¡Ahora es un cerdito pequeño!",
+        "words": [
+          "Now",
+          "is",
+          "a",
+          "little pig",
+          "small"
+        ]
+      },
+      {
+        "es": "Alicia deja que el cerdito corra libre al bosque.",
+        "words": [
+          "Alice",
+          "lets",
+          "that",
+          "the",
+          "little pig",
+          "run",
+          "free",
+          "to the",
+          "forest"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 6,
+    "chapterTitle": "Capítulo 6: Cerdo y Pimienta",
+    "title": "El gato sonriente",
+    "titleEn": "The Grinning Cat",
+    "sentences": [
+      {
+        "es": "Alicia ve al gato otra vez, ahora en un árbol.",
+        "words": [
+          "Alice",
+          "sees",
+          "at the",
+          "cat",
+          "another",
+          "time",
+          "now",
+          "in",
+          "a",
+          "tree"
+        ]
+      },
+      {
+        "es": "«¿A dónde debo ir?», pregunta Alicia.",
+        "words": [
+          "To",
+          "where",
+          "should",
+          "I go",
+          "asks",
+          "Alice"
+        ]
+      },
+      {
+        "es": "«Eso depende de qué quieras», dice el gato.",
+        "words": [
+          "That",
+          "depends",
+          "on",
+          "what",
+          "you want",
+          "says",
+          "the",
+          "cat"
+        ]
+      },
+      {
+        "es": "«Aquí todos están un poco locos de todos modos», dice el gato.",
+        "words": [
+          "Here",
+          "all",
+          "are",
+          "a",
+          "little",
+          "crazy",
+          "of",
+          "all",
+          "ways",
+          "says",
+          "the",
+          "cat"
+        ]
+      },
+      {
+        "es": "El gato le muestra a Alicia dos caminos.",
+        "words": [
+          "The",
+          "cat",
+          "to her",
+          "shows",
+          "to",
+          "Alice",
+          "two",
+          "paths"
+        ]
+      },
+      {
+        "es": "Después el gato desaparece poco a poco.",
+        "words": [
+          "Then",
+          "the",
+          "cat",
+          "disappears",
+          "little",
+          "by",
+          "little"
+        ]
+      },
+      {
+        "es": "Primero desaparece el cuerpo.",
+        "words": [
+          "First",
+          "disappears",
+          "the",
+          "body"
+        ]
+      },
+      {
+        "es": "¡Al final solo queda la sonrisa!",
+        "words": [
+          "At the",
+          "end",
+          "only",
+          "remains",
+          "the",
+          "smile"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 7,
+    "chapterTitle": "Capítulo 7: Una Fiesta de Té Loca",
+    "title": "¡No hay lugar!",
+    "titleEn": "No Room!",
+    "sentences": [
+      {
+        "es": "Alicia encuentra una mesa larga bajo un árbol.",
+        "words": [
+          "Alice",
+          "finds",
+          "a",
+          "table",
+          "long",
+          "under",
+          "a",
+          "tree"
+        ]
+      },
+      {
+        "es": "Ahí están el sombrerero, la liebre de marzo y un lirón.",
+        "words": [
+          "There",
+          "are",
+          "the",
+          "hatter",
+          "the",
+          "hare",
+          "of",
+          "March",
+          "and",
+          "a",
+          "dormouse"
+        ]
+      },
+      {
+        "es": "Los tres están muy apretados en una esquina.",
+        "words": [
+          "The",
+          "three",
+          "are",
+          "very",
+          "squeezed",
+          "in",
+          "a",
+          "corner"
+        ]
+      },
+      {
+        "es": "El resto de la mesa está completamente vacío.",
+        "words": [
+          "The",
+          "rest",
+          "of",
+          "the",
+          "table",
+          "is",
+          "completely",
+          "empty"
+        ]
+      },
+      {
+        "es": "«¡No hay lugar! ¡No hay lugar!», gritan.",
+        "words": [
+          "Not",
+          "there is",
+          "room",
+          "not",
+          "there is",
+          "room",
+          "shout"
+        ]
+      },
+      {
+        "es": "«Pero sí hay mucho lugar», dice Alicia.",
+        "words": [
+          "But",
+          "indeed",
+          "there is",
+          "much",
+          "room",
+          "says",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Se sienta de todos modos en un sillón grande.",
+        "words": [
+          "(prefix)",
+          "sits",
+          "of",
+          "all",
+          "ways",
+          "in",
+          "a",
+          "armchair",
+          "big"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 7,
+    "chapterTitle": "Capítulo 7: Una Fiesta de Té Loca",
+    "title": "El reloj descompuesto",
+    "titleEn": "The Broken Watch",
+    "sentences": [
+      {
+        "es": "El sombrerero le hace una adivinanza a Alicia.",
+        "words": [
+          "The",
+          "hatter",
+          "to her",
+          "makes",
+          "a",
+          "riddle",
+          "to",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Pero nadie sabe la respuesta correcta.",
+        "words": [
+          "But",
+          "nobody",
+          "knows",
+          "the",
+          "answer",
+          "correct"
+        ]
+      },
+      {
+        "es": "El sombrerero muestra su reloj.",
+        "words": [
+          "The",
+          "hatter",
+          "shows",
+          "his",
+          "watch"
+        ]
+      },
+      {
+        "es": "El reloj siempre marca las seis.",
+        "words": [
+          "The",
+          "watch",
+          "always",
+          "marks",
+          "the",
+          "six"
+        ]
+      },
+      {
+        "es": "«Para mí siempre es hora del té», dice triste.",
+        "words": [
+          "For",
+          "me",
+          "always",
+          "is",
+          "hour",
+          "of the",
+          "tea",
+          "says",
+          "sadly"
+        ]
+      },
+      {
+        "es": "«El tiempo y yo ya no somos amigos desde una pelea.»",
+        "words": [
+          "The",
+          "time",
+          "and",
+          "I",
+          "already",
+          "not",
+          "are",
+          "friends",
+          "since",
+          "a",
+          "fight"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 7,
+    "chapterTitle": "Capítulo 7: Una Fiesta de Té Loca",
+    "title": "Siempre en círculos",
+    "titleEn": "Always in a Circle",
+    "sentences": [
+      {
+        "es": "Todos en la mesa cambian de lugar todo el tiempo.",
+        "words": [
+          "All",
+          "at",
+          "the",
+          "table",
+          "change",
+          "of",
+          "place",
+          "all",
+          "the",
+          "time"
+        ]
+      },
+      {
+        "es": "Se mueven un lugar más, una y otra vez.",
+        "words": [
+          "(prefix)",
+          "move",
+          "one",
+          "place",
+          "more",
+          ",",
+          "again",
+          "and",
+          "again"
+        ]
+      },
+      {
+        "es": "Así siempre es hora del té, para siempre.",
+        "words": [
+          "So",
+          "always",
+          "is",
+          "hour",
+          "of the",
+          "tea",
+          "for",
+          "ever"
+        ]
+      },
+      {
+        "es": "El lirón duerme casi todo el tiempo.",
+        "words": [
+          "The",
+          "dormouse",
+          "sleeps",
+          "almost",
+          "all",
+          "the",
+          "time"
+        ]
+      },
+      {
+        "es": "A veces despierta un poco y cuenta algo.",
+        "words": [
+          "At",
+          "times",
+          "wakes up",
+          "a",
+          "little",
+          "and",
+          "tells",
+          "something"
+        ]
+      },
+      {
+        "es": "Después se vuelve a dormir enseguida.",
+        "words": [
+          "Then",
+          "(prefix)",
+          "returns",
+          "to",
+          "sleep",
+          "right away"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 7,
+    "chapterTitle": "Capítulo 7: Una Fiesta de Té Loca",
+    "title": "Alicia se va",
+    "titleEn": "Alice Leaves",
+    "sentences": [
+      {
+        "es": "Alicia piensa que la fiesta es muy cansada.",
+        "words": [
+          "Alice",
+          "thinks",
+          "that",
+          "the",
+          "party",
+          "is",
+          "very",
+          "tiring"
+        ]
+      },
+      {
+        "es": "Nadie le da una respuesta clara.",
+        "words": [
+          "Nobody",
+          "to her",
+          "gives",
+          "a",
+          "answer",
+          "clear"
+        ]
+      },
+      {
+        "es": "«Esta es la fiesta de té más tonta del mundo», dice Alicia.",
+        "words": [
+          "This",
+          "is",
+          "the",
+          "party",
+          "of",
+          "tea",
+          "most",
+          "silly",
+          "of the",
+          "world",
+          "says",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Se levanta y se va sin más.",
+        "words": [
+          "(prefix)",
+          "stands up",
+          "and",
+          "(prefix)",
+          "goes",
+          "without",
+          "more"
+        ]
+      },
+      {
+        "es": "Nadie la detiene.",
+        "words": [
+          "Nobody",
+          "her",
+          "stops"
+        ]
+      },
+      {
+        "es": "Pronto Alicia ve un árbol con una puerta pequeña.",
+        "words": [
+          "Soon",
+          "Alice",
+          "sees",
+          "a",
+          "tree",
+          "with",
+          "a",
+          "door",
+          "small"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 8,
+    "chapterTitle": "Capítulo 8: El Jardín de Croquet de la Reina",
+    "title": "Las rosas rojas",
+    "titleEn": "The Red Roses",
+    "sentences": [
+      {
+        "es": "Alicia llega a un jardín muy hermoso.",
+        "words": [
+          "Alice",
+          "arrives",
+          "(marker)",
+          "a",
+          "garden",
+          "very",
+          "beautiful"
+        ]
+      },
+      {
+        "es": "Tres jardineros de naipes pintan rosas blancas de rojo.",
+        "words": [
+          "Three",
+          "gardeners",
+          "of",
+          "cards",
+          "paint",
+          "roses",
+          "white",
+          "of",
+          "red"
+        ]
+      },
+      {
+        "es": "Por error habían plantado las rosas equivocadas.",
+        "words": [
+          "By",
+          "mistake",
+          "had",
+          "planted",
+          "the",
+          "roses",
+          "wrong"
+        ]
+      },
+      {
+        "es": "«Si la reina ve esto, estamos perdidos», susurran.",
+        "words": [
+          "If",
+          "the",
+          "queen",
+          "sees",
+          "this",
+          "we are",
+          "lost",
+          "whisper"
+        ]
+      },
+      {
+        "es": "Alicia no ayuda, solo observa.",
+        "words": [
+          "Alice",
+          "not",
+          "helps",
+          "only",
+          "observes"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 8,
+    "chapterTitle": "Capítulo 8: El Jardín de Croquet de la Reina",
+    "title": "Llega la reina",
+    "titleEn": "The Queen Arrives",
+    "sentences": [
+      {
+        "es": "Una gran procesión entra al jardín.",
+        "words": [
+          "A",
+          "great",
+          "procession",
+          "enters",
+          "into the",
+          "garden"
+        ]
+      },
+      {
+        "es": "Soldados, cortesanos y el conejo blanco vienen ahí.",
+        "words": [
+          "Soldiers",
+          "courtiers",
+          "and",
+          "the",
+          "rabbit",
+          "white",
+          "come",
+          "there"
+        ]
+      },
+      {
+        "es": "El valet lleva la corona en un cojín.",
+        "words": [
+          "The",
+          "knave",
+          "carries",
+          "the",
+          "crown",
+          "on",
+          "a",
+          "cushion"
+        ]
+      },
+      {
+        "es": "Al final vienen el rey y la reina.",
+        "words": [
+          "At the",
+          "end",
+          "come",
+          "the",
+          "king",
+          "and",
+          "the",
+          "queen"
+        ]
+      },
+      {
+        "es": "La reina ve las rosas rojas de inmediato.",
+        "words": [
+          "The",
+          "queen",
+          "sees",
+          "the",
+          "roses",
+          "red",
+          "immediately",
+          "(particle)"
+        ]
+      },
+      {
+        "es": "«¿Quién hizo esto?», grita muy fuerte.",
+        "words": [
+          "Who",
+          "did",
+          "this",
+          "shouts",
+          "very",
+          "loud"
+        ]
+      },
+      {
+        "es": "«¡Que le corten la cabeza!», grita la reina.",
+        "words": [
+          "That",
+          "to him",
+          "they cut",
+          "the",
+          "head",
+          "shouts",
+          "the",
+          "queen"
+        ]
+      },
+      {
+        "es": "Alicia esconde a los jardineros en una maceta.",
+        "words": [
+          "Alice",
+          "hides",
+          "(marker)",
+          "the",
+          "gardeners",
+          "in",
+          "a",
+          "flowerpot"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 8,
+    "chapterTitle": "Capítulo 8: El Jardín de Croquet de la Reina",
+    "title": "Croquet loco",
+    "titleEn": "Crazy Croquet",
+    "sentences": [
+      {
+        "es": "La reina invita a Alicia a jugar croquet.",
+        "words": [
+          "The",
+          "queen",
+          "invites",
+          "(marker)",
+          "Alice",
+          "to",
+          "play",
+          "croquet"
+        ]
+      },
+      {
+        "es": "En vez de mazos usan flamencos vivos.",
+        "words": [
+          "In",
+          "place",
+          "of",
+          "mallets",
+          "use",
+          "flamingos",
+          "alive"
+        ]
+      },
+      {
+        "es": "En vez de bolas usan erizos.",
+        "words": [
+          "In",
+          "place",
+          "of",
+          "balls",
+          "use",
+          "hedgehogs"
+        ]
+      },
+      {
+        "es": "Los erizos se van rodando cuando quieren.",
+        "words": [
+          "The",
+          "hedgehogs",
+          "(prefix)",
+          "go",
+          "rolling",
+          "when",
+          "they want"
+        ]
+      },
+      {
+        "es": "Los flamencos voltean la cabeza todo el tiempo.",
+        "words": [
+          "The",
+          "flamingos",
+          "turn",
+          "the",
+          "head",
+          "all",
+          "the",
+          "time"
+        ]
+      },
+      {
+        "es": "Es casi imposible jugar bien.",
+        "words": [
+          "Is",
+          "almost",
+          "impossible",
+          "to play",
+          "well"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 8,
+    "chapterTitle": "Capítulo 8: El Jardín de Croquet de la Reina",
+    "title": "La cabeza del gato",
+    "titleEn": "The Cat's Head",
+    "sentences": [
+      {
+        "es": "De repente aparece la cabeza del gato sonriente en el aire.",
+        "words": [
+          "Suddenly",
+          "(particle)",
+          "appears",
+          "the",
+          "head",
+          "of the",
+          "cat",
+          "grinning",
+          "in",
+          "the",
+          "air"
+        ]
+      },
+      {
+        "es": "Solo está la cabeza, sin cuerpo.",
+        "words": [
+          "Only",
+          "is",
+          "the",
+          "head",
+          "without",
+          "body"
+        ]
+      },
+      {
+        "es": "El rey piensa que eso es muy grosero.",
+        "words": [
+          "The",
+          "king",
+          "thinks",
+          "that",
+          "that",
+          "is",
+          "very",
+          "rude"
+        ]
+      },
+      {
+        "es": "«No se puede cortar una cabeza sin cuerpo», dice alguien.",
+        "words": [
+          "Not",
+          "(prefix)",
+          "can",
+          "cut",
+          "a",
+          "head",
+          "without",
+          "body",
+          "says",
+          "someone"
+        ]
+      },
+      {
+        "es": "Todos discuten mucho sobre este problema.",
+        "words": [
+          "All",
+          "discuss",
+          "much",
+          "about",
+          "this",
+          "problem"
+        ]
+      },
+      {
+        "es": "Después la cabeza del gato desaparece otra vez.",
+        "words": [
+          "Then",
+          "the",
+          "head",
+          "of the",
+          "cat",
+          "disappears",
+          "another",
+          "time"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 9,
+    "chapterTitle": "Capítulo 9: La Historia de la Falsa Tortuga",
+    "title": "El grifo",
+    "titleEn": "The Gryphon",
+    "sentences": [
+      {
+        "es": "La reina de repente se vuelve mucho más amable.",
+        "words": [
+          "The",
+          "queen",
+          "suddenly",
+          "(particle)",
+          "(prefix)",
+          "becomes",
+          "much",
+          "more",
+          "kind"
+        ]
+      },
+      {
+        "es": "Manda a Alicia con un grifo.",
+        "words": [
+          "Sends",
+          "(marker)",
+          "Alice",
+          "with",
+          "a",
+          "gryphon"
+        ]
+      },
+      {
+        "es": "El grifo es mitad águila, mitad león.",
+        "words": [
+          "The",
+          "gryphon",
+          "is",
+          "half",
+          "eagle",
+          "half",
+          "lion"
+        ]
+      },
+      {
+        "es": "Van juntos hacia la falsa tortuga.",
+        "words": [
+          "Go",
+          "together",
+          "toward",
+          "the",
+          "fake",
+          "turtle"
+        ]
+      },
+      {
+        "es": "La falsa tortuga está triste, sentada en una roca.",
+        "words": [
+          "The",
+          "fake",
+          "turtle",
+          "is",
+          "sad",
+          "seated",
+          "on",
+          "a",
+          "rock"
+        ]
+      },
+      {
+        "es": "Suspira profundamente todo el tiempo.",
+        "words": [
+          "Sighs",
+          "deeply",
+          "all",
+          "the",
+          "time"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 9,
+    "chapterTitle": "Capítulo 9: La Historia de la Falsa Tortuga",
+    "title": "La escuela bajo el mar",
+    "titleEn": "The Underwater School",
+    "sentences": [
+      {
+        "es": "La falsa tortuga cuenta sobre su pasado.",
+        "words": [
+          "The",
+          "fake",
+          "turtle",
+          "tells",
+          "about",
+          "her",
+          "past"
+        ]
+      },
+      {
+        "es": "Antes era una tortuga de verdad.",
+        "words": [
+          "Before",
+          "was",
+          "a",
+          "turtle",
+          "of",
+          "truth"
+        ]
+      },
+      {
+        "es": "Iba a una escuela bajo el mar.",
+        "words": [
+          "Went",
+          "to",
+          "a",
+          "school",
+          "under",
+          "the",
+          "sea"
+        ]
+      },
+      {
+        "es": "El maestro tenía un nombre muy raro.",
+        "words": [
+          "The",
+          "teacher",
+          "had",
+          "a",
+          "name",
+          "very",
+          "strange"
+        ]
+      },
+      {
+        "es": "Las materias en la escuela eran muy extrañas.",
+        "words": [
+          "The",
+          "subjects",
+          "in",
+          "the",
+          "school",
+          "were",
+          "very",
+          "strange"
+        ]
+      },
+      {
+        "es": "Cada día las clases se hacían más cortas.",
+        "words": [
+          "Each",
+          "day",
+          "the",
+          "classes",
+          "(prefix)",
+          "became",
+          "more",
+          "short"
+        ]
+      },
+      {
+        "es": "«Por eso se llaman clases», dice el grifo y se ríe.",
+        "words": [
+          "For",
+          "that",
+          "(prefix)",
+          "are called",
+          "classes",
+          "says",
+          "the",
+          "gryphon",
+          "and",
+          "(prefix)",
+          "laughs"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 10,
+    "chapterTitle": "Capítulo 10: La Cuadrilla de la Langosta",
+    "title": "El baile de las langostas",
+    "titleEn": "The Lobster Dance",
+    "sentences": [
+      {
+        "es": "El grifo y la falsa tortuga muestran un baile.",
+        "words": [
+          "The",
+          "gryphon",
+          "and",
+          "the",
+          "fake",
+          "turtle",
+          "show",
+          "a",
+          "dance"
+        ]
+      },
+      {
+        "es": "El baile se llama la cuadrilla de la langosta.",
+        "words": [
+          "The",
+          "dance",
+          "(prefix)",
+          "is called",
+          "the",
+          "quadrille",
+          "of",
+          "the",
+          "lobster"
+        ]
+      },
+      {
+        "es": "Se baila en la playa con langostas.",
+        "words": [
+          "(prefix)",
+          "dances",
+          "on",
+          "the",
+          "beach",
+          "with",
+          "lobsters"
+        ]
+      },
+      {
+        "es": "Avientan las langostas lejos hacia el mar.",
+        "words": [
+          "They throw",
+          "the",
+          "lobsters",
+          "far",
+          "toward",
+          "the",
+          "sea"
+        ]
+      },
+      {
+        "es": "Después nadan tras ellas.",
+        "words": [
+          "Then",
+          "they swim",
+          "after",
+          "them"
+        ]
+      },
+      {
+        "es": "Alicia piensa que el baile es bastante complicado.",
+        "words": [
+          "Alice",
+          "thinks",
+          "that",
+          "the",
+          "dance",
+          "is",
+          "quite",
+          "complicated"
+        ]
+      },
+      {
+        "es": "Pero de todos modos le gusta ver.",
+        "words": [
+          "But",
+          "of",
+          "all",
+          "ways",
+          "to her",
+          "pleases",
+          "to watch"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 10,
+    "chapterTitle": "Capítulo 10: La Cuadrilla de la Langosta",
+    "title": "La canción triste",
+    "titleEn": "The Sad Song",
+    "sentences": [
+      {
+        "es": "La falsa tortuga canta una canción sobre sopa.",
+        "words": [
+          "The",
+          "fake",
+          "turtle",
+          "sings",
+          "a",
+          "song",
+          "about",
+          "soup"
+        ]
+      },
+      {
+        "es": "La canción es muy, muy triste.",
+        "words": [
+          "The",
+          "song",
+          "is",
+          "very",
+          "very",
+          "sad"
+        ]
+      },
+      {
+        "es": "Grandes lágrimas le corren por la cara.",
+        "words": [
+          "Big",
+          "tears",
+          "to her",
+          "run",
+          "down",
+          "the",
+          "face"
+        ]
+      },
+      {
+        "es": "De repente alguien grita de lejos: «¡Empieza el juicio!»",
+        "words": [
+          "Suddenly",
+          "someone",
+          "shouts",
+          "from",
+          "afar",
+          ":",
+          "Begins",
+          "the",
+          "trial"
+        ]
+      },
+      {
+        "es": "El grifo toma a Alicia de la mano enseguida.",
+        "words": [
+          "The",
+          "gryphon",
+          "takes",
+          "(marker)",
+          "Alice",
+          "by",
+          "the",
+          "hand",
+          "right away"
+        ]
+      },
+      {
+        "es": "Los dos corren rápido hacia la corte.",
+        "words": [
+          "The",
+          "two",
+          "run",
+          "quickly",
+          "toward",
+          "the",
+          "court"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 11,
+    "chapterTitle": "Capítulo 11: ¿Quién Robó las Tartas?",
+    "title": "La sala del juicio",
+    "titleEn": "The Courtroom",
+    "sentences": [
+      {
+        "es": "El rey y la reina están sentados en sus tronos.",
+        "words": [
+          "The",
+          "king",
+          "and",
+          "the",
+          "queen",
+          "are",
+          "seated",
+          "on",
+          "their",
+          "thrones"
+        ]
+      },
+      {
+        "es": "El valet está encadenado frente a la corte.",
+        "words": [
+          "The",
+          "knave",
+          "is",
+          "chained",
+          "in front of",
+          "(marker)",
+          "the",
+          "court"
+        ]
+      },
+      {
+        "es": "Lo acusan de haber robado las tartas.",
+        "words": [
+          "Him",
+          "they accuse",
+          "of",
+          "having",
+          "stolen",
+          "the",
+          "tarts"
+        ]
+      },
+      {
+        "es": "Doce animales están sentados como jurado en fila.",
+        "words": [
+          "Twelve",
+          "animals",
+          "are",
+          "seated",
+          "as",
+          "jury",
+          "in",
+          "row"
+        ]
+      },
+      {
+        "es": "Escriben con muchas ganas en tablitas pequeñas.",
+        "words": [
+          "They write",
+          "with",
+          "much",
+          "eagerness",
+          "on",
+          "little slates",
+          "small"
+        ]
+      },
+      {
+        "es": "El conejo blanco lee la acusación en voz alta.",
+        "words": [
+          "The",
+          "rabbit",
+          "white",
+          "reads",
+          "the",
+          "accusation",
+          "in",
+          "voice",
+          "loud"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 11,
+    "chapterTitle": "Capítulo 11: ¿Quién Robó las Tartas?",
+    "title": "El sombrerero nervioso",
+    "titleEn": "The Nervous Hatter",
+    "sentences": [
+      {
+        "es": "El sombrerero es llamado como el primer testigo.",
+        "words": [
+          "The",
+          "hatter",
+          "is",
+          "called",
+          "as",
+          "the",
+          "first",
+          "witness"
+        ]
+      },
+      {
+        "es": "Todavía tiene su taza de té en la mano.",
+        "words": [
+          "Still",
+          "has",
+          "his",
+          "cup",
+          "of",
+          "tea",
+          "in",
+          "the",
+          "hand"
+        ]
+      },
+      {
+        "es": "Está muy nervioso frente a la reina.",
+        "words": [
+          "Is",
+          "very",
+          "nervous",
+          "in front of",
+          "(marker)",
+          "the",
+          "queen"
+        ]
+      },
+      {
+        "es": "Sus respuestas no tienen ningún sentido.",
+        "words": [
+          "His",
+          "answers",
+          "not",
+          "have",
+          "any",
+          "sense"
+        ]
+      },
+      {
+        "es": "La reina se impacienta rápido con él.",
+        "words": [
+          "The",
+          "queen",
+          "(prefix)",
+          "gets impatient",
+          "quickly",
+          "with",
+          "him"
+        ]
+      },
+      {
+        "es": "«¡Que le corten la cabeza!», grita otra vez.",
+        "words": [
+          "That",
+          "to him",
+          "they cut",
+          "the",
+          "head",
+          "shouts",
+          "another",
+          "time"
+        ]
+      },
+      {
+        "es": "El sombrerero sale corriendo rápido de la sala.",
+        "words": [
+          "The",
+          "hatter",
+          "exits",
+          "running",
+          "quickly",
+          "from",
+          "the",
+          "room"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 11,
+    "chapterTitle": "Capítulo 11: ¿Quién Robó las Tartas?",
+    "title": "Alicia crece otra vez",
+    "titleEn": "Alice Grows Again",
+    "sentences": [
+      {
+        "es": "Después viene la cocinera de la duquesa.",
+        "words": [
+          "Then",
+          "comes",
+          "the",
+          "cook",
+          "of",
+          "the",
+          "duchess"
+        ]
+      },
+      {
+        "es": "Solo cuenta algo sobre la pimienta.",
+        "words": [
+          "Only",
+          "tells",
+          "something",
+          "about",
+          "the",
+          "pepper"
+        ]
+      },
+      {
+        "es": "Su testimonio no ayuda a nadie.",
+        "words": [
+          "Her",
+          "testimony",
+          "not",
+          "helps",
+          "(marker)",
+          "nobody"
+        ]
+      },
+      {
+        "es": "Alicia nota que está creciendo poco a poco.",
+        "words": [
+          "Alice",
+          "notices",
+          "that",
+          "is",
+          "growing",
+          "little",
+          "by",
+          "little"
+        ]
+      },
+      {
+        "es": "Ahora es mucho más grande que antes.",
+        "words": [
+          "Now",
+          "is",
+          "much",
+          "more",
+          "big",
+          "than",
+          "before"
+        ]
+      },
+      {
+        "es": "Un conejillo de indias festeja y de inmediato lo callan.",
+        "words": [
+          "A",
+          "guinea pig",
+          "of",
+          "indies",
+          "celebrates",
+          "and",
+          "immediately",
+          "(particle)",
+          "him",
+          "they silence"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "chapterTitle": "Capítulo 12: El Testimonio de Alicia",
+    "title": "Alicia como testigo",
+    "titleEn": "Alice as a Witness",
+    "sentences": [
+      {
+        "es": "«¡Alicia!», grita el rey de repente.",
+        "words": [
+          "Alice",
+          ",",
+          "shouts",
+          "the",
+          "king",
+          "suddenly"
+        ]
+      },
+      {
+        "es": "Ahora Alicia misma tiene que dar testimonio.",
+        "words": [
+          "Now",
+          "Alice",
+          "herself",
+          "has",
+          "to",
+          "give",
+          "testimony"
+        ]
+      },
+      {
+        "es": "Se levanta rápido y ahora es enorme.",
+        "words": [
+          "(prefix)",
+          "stands up",
+          "quickly",
+          "and",
+          "now",
+          "is",
+          "enormous"
+        ]
+      },
+      {
+        "es": "Por accidente tira la banca del jurado.",
+        "words": [
+          "By",
+          "accident",
+          "knocks over",
+          "the",
+          "bench",
+          "of the",
+          "jury"
+        ]
+      },
+      {
+        "es": "Todos los animalitos caen de la banca.",
+        "words": [
+          "All",
+          "the",
+          "little animals",
+          "fall",
+          "from",
+          "the",
+          "bench"
+        ]
+      },
+      {
+        "es": "Alicia los levanta de nuevo, rápido.",
+        "words": [
+          "Alice",
+          "them",
+          "lifts",
+          "again",
+          ",",
+          "quickly"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "chapterTitle": "Capítulo 12: El Testimonio de Alicia",
+    "title": "Una prueba extraña",
+    "titleEn": "A Strange Piece of Evidence",
+    "sentences": [
+      {
+        "es": "El rey encuentra un papel como prueba.",
+        "words": [
+          "The",
+          "king",
+          "finds",
+          "a",
+          "paper",
+          "as",
+          "evidence"
+        ]
+      },
+      {
+        "es": "En el papel hay unas líneas extrañas.",
+        "words": [
+          "On",
+          "the",
+          "paper",
+          "there are",
+          "some",
+          "lines",
+          "strange"
+        ]
+      },
+      {
+        "es": "El rey trata de explicar las líneas.",
+        "words": [
+          "The",
+          "king",
+          "tries",
+          "to",
+          "explain",
+          "the",
+          "lines"
+        ]
+      },
+      {
+        "es": "Pero su explicación no tiene ningún sentido.",
+        "words": [
+          "But",
+          "his",
+          "explanation",
+          "not",
+          "has",
+          "any",
+          "sense"
+        ]
+      },
+      {
+        "es": "«Esta es la prueba más importante de todas», dice el rey de todos modos.",
+        "words": [
+          "This",
+          "is",
+          "the",
+          "evidence",
+          "most",
+          "important",
+          "of",
+          "all",
+          "says",
+          "the",
+          "king",
+          "of",
+          "all",
+          "ways"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "chapterTitle": "Capítulo 12: El Testimonio de Alicia",
+    "title": "Alicia se vuelve valiente",
+    "titleEn": "Alice Grows Brave",
+    "sentences": [
+      {
+        "es": "La reina grita: «¡Primero el veredicto, después la prueba!»",
+        "words": [
+          "The",
+          "queen",
+          "shouts",
+          "First",
+          "the",
+          "verdict",
+          "then",
+          "the",
+          "evidence"
+        ]
+      },
+      {
+        "es": "«¡Eso está totalmente al revés!», grita Alicia fuerte.",
+        "words": [
+          "That",
+          "is",
+          "totally",
+          "(marker)",
+          "backward",
+          "shouts",
+          "Alice",
+          "loudly"
+        ]
+      },
+      {
+        "es": "«¡Cállate!», grita la reina.",
+        "words": [
+          "Be quiet",
+          "shouts",
+          "the",
+          "queen"
+        ]
+      },
+      {
+        "es": "«Ahora soy tan grande como tú», dice Alicia valiente.",
+        "words": [
+          "Now",
+          "I am",
+          "as",
+          "big",
+          "as",
+          "you",
+          "says",
+          "Alice",
+          "bravely"
+        ]
+      },
+      {
+        "es": "«¡Ustedes no son más que una baraja de cartas!», grita Alicia.",
+        "words": [
+          "You all",
+          "not",
+          "are",
+          "more",
+          "than",
+          "a",
+          "deck",
+          "of",
+          "cards",
+          "shouts",
+          "Alice"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "chapterTitle": "Capítulo 12: El Testimonio de Alicia",
+    "title": "Despertar",
+    "titleEn": "Waking Up",
+    "sentences": [
+      {
+        "es": "De repente todas las cartas vuelan por el aire.",
+        "words": [
+          "Suddenly",
+          "(particle)",
+          "all",
+          "the",
+          "cards",
+          "fly",
+          "through",
+          "the",
+          "air"
+        ]
+      },
+      {
+        "es": "Todas caen sobre Alicia.",
+        "words": [
+          "All",
+          "fall",
+          "on",
+          "Alice"
+        ]
+      },
+      {
+        "es": "Alicia grita asustada.",
+        "words": [
+          "Alice",
+          "screams",
+          "frightened"
+        ]
+      },
+      {
+        "es": "Después abre los ojos despacio.",
+        "words": [
+          "Then",
+          "opens",
+          "the",
+          "eyes",
+          "slowly"
+        ]
+      },
+      {
+        "es": "Está otra vez tranquila junto al río.",
+        "words": [
+          "Is",
+          "another",
+          "time",
+          "calm",
+          "next",
+          "to the",
+          "river"
+        ]
+      },
+      {
+        "es": "Su hermana le quita unas hojas del vestido con cuidado.",
+        "words": [
+          "Her",
+          "sister",
+          "to her",
+          "removes",
+          "some",
+          "leaves",
+          "from the",
+          "dress",
+          "with",
+          "care"
+        ]
+      },
+      {
+        "es": "Todo había sido solo un sueño.",
+        "words": [
+          "Everything",
+          "had",
+          "been",
+          "only",
+          "a",
+          "dream"
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "chapterTitle": "Capítulo 12: El Testimonio de Alicia",
+    "title": "El final",
+    "titleEn": "The End",
+    "sentences": [
+      {
+        "es": "Alicia le cuenta su sueño a su hermana.",
+        "words": [
+          "Alice",
+          "to her",
+          "tells",
+          "her",
+          "dream",
+          "to",
+          "her",
+          "sister"
+        ]
+      },
+      {
+        "es": "Le cuenta del conejo, la oruga y la fiesta de té.",
+        "words": [
+          "To her",
+          "tells",
+          "of the",
+          "rabbit",
+          "the",
+          "caterpillar",
+          "and",
+          "the",
+          "party",
+          "of",
+          "tea"
+        ]
+      },
+      {
+        "es": "Su hermana escucha con atención.",
+        "words": [
+          "Her",
+          "sister",
+          "listens",
+          "with",
+          "attention"
+        ]
+      },
+      {
+        "es": "Alicia se levanta y corre a casa a cenar.",
+        "words": [
+          "Alice",
+          "(prefix)",
+          "stands up",
+          "and",
+          "runs",
+          "(marker)",
+          "home",
+          "to",
+          "dine"
+        ]
+      },
+      {
+        "es": "«Qué sueño tan maravillosamente extraño», piensa Alicia.",
+        "words": [
+          "What",
+          "dream",
+          "so",
+          "wonderfully",
+          "strange",
+          "thinks",
+          "Alice"
+        ]
+      }
+    ]
+  }
+];
+
+let cur = 0;
+let sentIdx = 0;
+let playing = false;
+let rate = 0.88;
+let queueToken = 0;
+let markedWord = null;
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function glossHTML(es, words, si){
+  const tokens = es.split(' ');
+  return tokens.map((tok,i)=>{
+    const m = tok.match(/^([¿¡]*)([^\s.,!?;:()"«»'’]+)([.,!?;:()"«»'’]*)$/);
+    if(!m || !words || words[i]===undefined) return esc(tok);
+    const lead=m[1]||'', word=m[2], trail=m[3]||'';
+    return `${esc(lead)}<span class="gw" data-tip="${esc(words[i])}" data-sent="${si}" data-word="${i}">${esc(word)}</span>${esc(trail)}`;
+  }).join(' ');
+}
+
+function renderTOC(){
+  const el = document.getElementById('toc');
+  let html = '';
+  let lastChapter = null;
+  PAGES.forEach((p,i)=>{
+    const startsChapter = p.chapter !== lastChapter;
+    lastChapter = p.chapter;
+    html += `<button class="${i===cur?'active':''}${startsChapter?' chapter-start':''}" data-i="${i}" title="${esc(p.chapterTitle)} — ${esc(p.title)}">${i+1}</button>`;
+  });
+  el.innerHTML = html;
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>goToPage(+b.dataset.i));
+}
+
+function renderPage(){
+  const p = PAGES[cur];
+  const el = document.getElementById('pageCard');
+  el.innerHTML = `
+    <div class="chapter-label">${esc(p.chapterTitle)}</div>
+    <div class="page-num">Página ${cur+1} de ${PAGES.length}</div>
+    <div class="page-title">${esc(p.title)}</div>
+    <div class="page-title-en">${esc(p.titleEn)}</div>
+    <div class="story">${p.sentences.map((s,i)=>`<span class="sent" id="sent-${i}" data-i="${i}">${glossHTML(s.es, s.words, i)}</span> `).join('')}</div>
+    <div class="pageturn">
+      <button id="prevPageBtn" ${cur===0?'disabled':''}>‹ Página Anterior</button>
+      <button id="nextPageBtn" ${cur===PAGES.length-1?'disabled':''}>Página Siguiente ›</button>
+    </div>
+  `;
+  document.getElementById('prevPageBtn').onclick=()=>goToPage(cur-1);
+  document.getElementById('nextPageBtn').onclick=()=>goToPage(cur+1);
+  document.querySelectorAll('.sent').forEach(s=>s.addEventListener('click',()=>{
+    const i=+s.dataset.i;
+    if(i!==sentIdx || !playing){ jumpToSentence(i); }
+  }));
+  updateScrubMax();
+  highlightSentence(sentIdx);
+  renderTOC();
+}
+
+function updateScrubMax(){
+  const n = PAGES[cur].sentences.length;
+  const scrub = document.getElementById('scrub');
+  scrub.max = n-1;
+  scrub.value = sentIdx;
+  document.getElementById('playerLabel').textContent = `Oración ${sentIdx+1} / ${n}`;
+}
+
+function highlightSentence(i){
+  document.querySelectorAll('.sent.reading').forEach(s=>s.classList.remove('reading'));
+  const el = document.getElementById('sent-'+i);
+  if(el){ el.classList.add('reading'); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+  sentIdx = i;
+  updateScrubMax();
+}
+
+function clearWordMark(){
+  document.querySelectorAll('.gw.word-marked').forEach(w=>w.classList.remove('word-marked'));
+}
+
+function goToPage(i){
+  stopReading();
+  cur = Math.max(0, Math.min(PAGES.length-1, i));
+  sentIdx = 0;
+  markedWord = null;
+  renderPage();
+}
+
+function jumpToSentence(i){
+  const wasPlaying = playing;
+  stopReading();
+  highlightSentence(i);
+  if(wasPlaying) startReading();
+}
+
+function stopReading(){
+  queueToken++;
+  window.speechSynthesis.cancel();
+  playing = false;
+  document.getElementById('playBtn').textContent = '▶️';
+}
+
+function startReading(){
+  playing = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  const myToken = ++queueToken;
+  const sentences = PAGES[cur].sentences;
+  let wordStart = null;
+  if(markedWord && markedWord.sentIdx === sentIdx){ wordStart = markedWord.wordIdx; }
+  markedWord = null;
+  clearWordMark();
+
+  function speakFrom(i, fromWord){
+    if(myToken !== queueToken) return;
+    if(i >= sentences.length){
+      playing = false;
+      document.getElementById('playBtn').textContent = '▶️';
+      return;
+    }
+    highlightSentence(i);
+    let text = sentences[i].es;
+    if(fromWord != null){
+      const toks = sentences[i].es.split(' ');
+      text = toks.slice(fromWord).join(' ');
+    }
+    const u = new SpeechSynthesisUtterance(text.replace(/[«»]/g,''));
+    u.lang = 'es-MX';
+    u.rate = rate;
+    u.onend = () => { if(myToken===queueToken) speakFrom(i+1, null); };
+    window.speechSynthesis.speak(u);
+  }
+  speakFrom(sentIdx, wordStart);
+}
+
+function togglePlay(){
+  if(playing){ stopReading(); }
+  else { startReading(); }
+}
+
+function stepSentence(delta){
+  const n = PAGES[cur].sentences.length;
+  const wasPlaying = playing;
+  stopReading();
+  const newIdx = Math.max(0, Math.min(n-1, sentIdx+delta));
+  highlightSentence(newIdx);
+  if(wasPlaying) startReading();
+}
+
+document.getElementById('prevBtn').onclick = () => stepSentence(-1);
+document.getElementById('nextBtn').onclick = () => stepSentence(1);
+document.getElementById('playBtn').onclick = togglePlay;
+document.getElementById('scrub').oninput = (e) => {
+  const wasPlaying = playing;
+  stopReading();
+  highlightSentence(+e.target.value);
+  if(wasPlaying) startReading();
+};
+document.getElementById('speedSlider').oninput = (e) => {
+  rate = +e.target.value;
+  document.getElementById('speedVal').textContent = rate.toFixed(2)+'x';
+};
+
+document.addEventListener('keydown', e=>{
+  if(e.code==='Space' && document.activeElement.tagName!=='INPUT'){
+    e.preventDefault();
+    togglePlay();
+  }
+});
+
+document.getElementById('pageCard').addEventListener('dblclick', e=>{
+  const w = e.target.closest('.gw');
+  if(!w) return;
+  clearWordMark();
+  const si = +w.dataset.sent, wi = +w.dataset.word;
+  markedWord = { sentIdx: si, wordIdx: wi };
+  w.classList.add('word-marked');
+  if(si !== sentIdx){ stopReading(); highlightSentence(si); }
+});
+
+renderPage();
+
+function initMode(){
+  const saved=localStorage.getItem('es-a1-dark');
+  const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setMode(saved!==null?saved==='1':prefersDark);
+}
+function setMode(dark){
+  document.body.classList.toggle('dark',dark);
+  document.getElementById('modeBtn').textContent=dark?'☀️':'🌙';
+  try{localStorage.setItem('es-a1-dark',dark?'1':'0');}catch(e){}
+}
+document.getElementById('modeBtn').onclick=()=>setMode(!document.body.classList.contains('dark'));
+initMode();
+
+(function(){
+  let tipEl, timer, autoHideTimer;
+  function ensureTip(){
+    if(!tipEl){ tipEl=document.createElement('div'); tipEl.id='glossTip'; document.body.appendChild(tipEl); }
+    return tipEl;
+  }
+  function showTip(target){
+    const tip=ensureTip();
+    tip.textContent=target.dataset.tip;
+    tip.classList.add('show');
+    const r=target.getBoundingClientRect();
+    tip.style.left=Math.min(Math.max(r.left+r.width/2,60),window.innerWidth-60)+'px';
+    tip.style.top=Math.max(r.top-10,10)+'px';
+    tip.style.transform='translate(-50%,-100%)';
+    clearTimeout(autoHideTimer);
+    autoHideTimer=setTimeout(hideTip,5000);
+  }
+  function hideTip(){ clearTimeout(timer); clearTimeout(autoHideTimer); ensureTip().classList.remove('show'); }
+  document.addEventListener('mouseover',e=>{
+    const g=e.target.closest('.gw'); if(!g)return;
+    clearTimeout(timer); timer=setTimeout(()=>showTip(g),500);
+  });
+  document.addEventListener('mouseout',e=>{ if(e.target.closest('.gw')) hideTip(); });
+})();
+</script>
+</body>
+</html>
