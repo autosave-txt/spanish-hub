@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Writing Practice — Kapitel 1 | Spanish Learning Hub</title>
+<title>Writing Practice — Capítulo 1 | Spanish Learning Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -78,7 +78,7 @@ a{color:var(--accent)}
 </div>
 <div class="wrap">
   <div class="top">
-    <h1>Kapitel 1: Saludos y Presentaciones</h1>
+    <h1>Capítulo 1: Saludos y Presentaciones</h1>
     <div class="sub">Greetings & Introductions — the same words and phrases from Vocabulary Chapter 1, now put to use.</div>
   </div>
 
@@ -90,7 +90,7 @@ a{color:var(--accent)}
   </div>
 
   <div class="scoreboard">
-    <span>Fortschritt (Progress): <b id="scoreText">0 / 0 geprüft (checked)</b></span>
+    <span>Progreso (Progress): <b id="scoreText">0 / 0 revisado (checked)</b></span>
     <span id="scorePct" style="color:var(--sub)"></span>
   </div>
 
@@ -214,8 +214,8 @@ function updateScoreboard(){
   const keys = Object.keys(checkedResults).filter(k=>k.startsWith(mode+'-'));
   let checkedCount = keys.length;
   let correctCount = keys.filter(k=>checkedResults[k].fullyCorrect).length;
-  document.getElementById('scoreText').textContent = `${checkedCount} / ${SENTENCES.length} geprüft (checked)`;
-  document.getElementById('scorePct').textContent = checkedCount ? `${correctCount} / ${checkedCount} richtig (correct)` : '';
+  document.getElementById('scoreText').textContent = `${checkedCount} / ${SENTENCES.length} revisado (checked)`;
+  document.getElementById('scorePct').textContent = checkedCount ? `${correctCount} / ${checkedCount} correcto (correct)` : '';
 }
 
 function renderEnEs(){
@@ -232,8 +232,8 @@ function renderEnEs(){
         <div class="prompt">${esc(s.en)}</div>
         <div class="blanks">${blanksHtml}</div>
         <div class="qactions">
-          <button class="primary" onclick="checkEnEs(${i})">Prüfen (Check)</button>
-          <button onclick="revealEnEs(${i})">Lösung zeigen (Show answer)</button>
+          <button class="primary" onclick="checkEnEs(${i})">Revisar (Check)</button>
+          <button onclick="revealEnEs(${i})">Mostrar solución (Show answer)</button>
         </div>
         <div class="qresult" id="result-${i}"></div>
       </div>`;
@@ -287,7 +287,7 @@ function renderEsEn(){
       <div class="prompt">${esc(s.es)} <button class="speak" onclick="speak('${esc(s.es).replace(/'/g,"\\'")}')" title="Hear">🔊</button></div>
       <div class="freeform"><textarea id="ta-${i}" placeholder="Your English translation..."></textarea></div>
       <div class="qactions">
-        <button class="primary" onclick="revealEsEn(${i})">Antwort zeigen (Show answer)</button>
+        <button class="primary" onclick="revealEsEn(${i})">Mostrar respuesta (Show answer)</button>
       </div>
       <div class="answer-reveal" id="answer-${i}"></div>
     </div>`).join('');
