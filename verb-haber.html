@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verb Deep-Dive: haber — Spanish Learning Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;--panel:#fff;--ink:#1e1e1e;--sub:#777;--muted:#aaa;
+  --accent:#b5342b;--accent-l:#fbe4e2;--accent-d:#7a2019;
+  --border:#e4e0da;--card:#fafaf8;
+  --t1:#8a5a2d;--t1-l:#f7ecdd;
+  --t2:#2d5a8c;--t2-l:#e2edf7;
+  --warn:#b5651d;--warn-bg:#fff4e6;
+  --radius:8px;--shadow:0 1px 3px rgba(0,0,0,.07);
+}
+body.dark{
+  --bg:#1a1615;--panel:#241d1c;--ink:#ede6e4;--sub:#a89b98;--muted:#6b625f;
+  --accent:#e0776e;--accent-l:#3a2320;--accent-d:#f0a49d;
+  --border:#3a2f2c;--card:#2a2220;
+  --t1:#d9a05c;--t1-l:#332a1c;
+  --t2:#6fa3d8;--t2-l:#1e2c3a;
+  --warn:#d99456;--warn-bg:#332a1c;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;transition:background .15s,color .15s}
+a{color:var(--accent)}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+.top-bar{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:10}
+.top-bar button,.top-bar a{height:38px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.top-bar a{width:auto;border-radius:99px;padding:0 14px;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.mode-toggle{width:38px}
+
+.top{margin-bottom:8px}
+.top h1{font-size:22px;font-weight:700;color:var(--accent-d)}
+.top .sub{font-size:13px;color:var(--sub);margin-top:4px}
+
+.intro{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:20px 0;box-shadow:var(--shadow);font-size:13.5px}
+.intro b{color:var(--accent-d)}
+
+.jump{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.jump a{font-size:11.5px;font-weight:600;background:var(--card);border:1px solid var(--border);padding:5px 11px;border-radius:99px;color:var(--sub)}
+.jump a:hover{border-color:var(--accent);color:var(--accent-d)}
+
+.section{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);scroll-margin-top:20px}
+.section h2{font-size:16px;font-weight:700;color:var(--accent-d)}
+.section .tense-en{font-size:12px;color:var(--sub);margin-bottom:14px;font-style:italic}
+
+.conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-bottom:12px}
+.conj-row{display:flex;flex-direction:column;background:var(--card);border-radius:6px;padding:6px 10px}
+.conj-row .top{display:flex;align-items:center;gap:8px}
+.conj-row .pron{font-size:11.5px;color:var(--sub);width:70px;flex-shrink:0}
+.conj-row .form{font-weight:700;font-size:14px;flex:1}
+.conj-row button{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:10.5px;flex-shrink:0}
+.conj-row button:hover{background:var(--accent);color:#fff}
+.conj-row .en{font-size:11.5px;line-height:1.2;color:var(--sub);padding-left:78px;margin-top:-2px}
+
+.gw{border-bottom:1px dotted var(--sub);cursor:help}
+#glossTip{position:fixed;background:rgba(20,20,20,.94);color:#fff;font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease;z-index:1000}
+#glossTip.show{opacity:1}
+
+.examples{margin-top:14px;border-top:1px dashed var(--border);padding-top:12px}
+.examples .ex-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--sub);margin-bottom:6px}
+.ex-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:6px;padding:7px 12px;margin-bottom:6px}
+.ex-row:last-child{margin-bottom:0}
+.ex-row .de{font-weight:600;font-size:13.5px;flex:1}
+.ex-row .en{font-size:12px;color:var(--sub);flex:1}
+.ex-row button{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:10.5px;flex-shrink:0}
+.ex-row button:hover{background:var(--accent);color:#fff}
+
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.tip{background:var(--t2-l);border-left:3px solid var(--t2);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.tip b{color:var(--t2)}
+.cross{background:var(--t1-l);border-left:3px solid var(--t1);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;margin-top:12px}
+.cross b{color:var(--t1)}
+.cross a{font-weight:700}
+
+.verblist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.verblist span{font-size:12px;font-weight:600;background:var(--t1-l);color:var(--t1);padding:4px 10px;border-radius:99px}
+
+.idiom-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.idiom{background:var(--card);border-radius:6px;padding:8px 12px}
+.idiom .de{font-weight:700;font-size:13.5px}
+.idiom .en{font-size:12px;color:var(--sub);margin-top:2px}
+
+@media(max-width:520px){.conj-grid,.idiom-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a href="index.html" title="Back to home">🏠 Home</a>
+  <button class="mode-toggle" id="modeBtn" title="Toggle dark mode">🌙</button>
+</div>
+<div class="wrap">
+  <div class="top">
+    <h1>Verb Deep-Dive: haber</h1>
+    <div class="sub">Not "to have (possess)" — that's tener. Haber has two jobs: the impersonal "hay" (there is/are), and the auxiliary that builds every compound tense.</div>
+  </div>
+
+  <div class="intro">
+    <b>haber</b> is one of the strangest verbs in Spanish because you almost never use it to mean "I have a thing" — that's <b>tener</b>'s job (see the <a href="verb-tener.html">tener page</a>). Instead haber does two very different jobs: as <b>hay</b>, it means "there is / there are" and never changes for person or number. As an auxiliary (he, has, ha, hemos, habéis, han), it's the verb that builds every compound tense — "I have eaten" is <b>he comido</b>, built from haber + a past participle, exactly like English "have" + "-ed".
+  </div>
+
+  <div class="jump">
+    <a href="#hay">Hay — there is/are</a>
+    <a href="#presente">Presente (auxiliary)</a>
+    <a href="#preterito-perfecto">Pretérito Perfecto</a>
+    <a href="#imperfecto">Imperfecto</a>
+    <a href="#futuro">Futuro Simple</a>
+    <a href="#condicional">Condicional</a>
+    <a href="#participles">Irregular participles</a>
+    <a href="#hay-que">hay que + infinitivo</a>
+  </div>
+
+  <div class="section" id="hay">
+    <h2>hay — there is / there are</h2>
+    <div class="tense-en">The single most useful form of haber — and the one you'll use constantly from day one</div>
+    <p style="font-size:13px">Unlike every other Spanish verb, <b>hay</b> never conjugates for person or number — it's the same word whether you mean "there is one chair" or "there are twenty chairs." It comes from haber but functions completely on its own.</p>
+    <div class="examples" style="margin-top:14px"><div class="ex-label">Examples</div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="there is">Hay</span> <span class="gw" data-tip="a">un</span> <span class="gw" data-tip="problem">problema</span>.</div><div class="en">There is a problem.</div><button data-de="Hay un problema." title="Hear">🔊</button></div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="there are">Hay</span> <span class="gw" data-tip="three">tres</span> <span class="gw" data-tip="people">personas</span> <span class="gw" data-tip="in the">en la</span> <span class="gw" data-tip="room">sala</span>.</div><div class="en">There are three people in the room.</div><button data-de="Hay tres personas en la sala." title="Hear">🔊</button></div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="there isn't">No hay</span> <span class="gw" data-tip="bread">pan</span>.</div><div class="en">There isn't any bread.</div><button data-de="No hay pan." title="Hear">🔊</button></div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="is there">¿Hay</span> <span class="gw" data-tip="a">un</span> <span class="gw" data-tip="bathroom">baño</span> <span class="gw" data-tip="near">cerca</span>?</div><div class="en">Is there a bathroom nearby?</div><button data-de="¿Hay un baño cerca?" title="Hear">🔊</button></div>
+    </div>
+    <div class="note">📝 Common trap: English speakers reach for <b>está/están</b> (from estar) when they mean "there is/are" — but estar is for locating something specific you already know exists ("the keys are on the table" = <b>las llaves están</b> en la mesa), while hay introduces something for the first time ("there are keys somewhere" = <b>hay</b> llaves).</div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="section">
+    <h2>📋 Quick reference — auxiliary forms side by side</h2>
+    <table id="refTable" style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px"></table>
+  </div>
+
+  <div class="section" id="hay-que">
+    <h2>hay que + infinitivo</h2>
+    <div class="tense-en">Impersonal obligation — "one must / it's necessary to," with no specific subject</div>
+    <p style="font-size:13px">This uses the impersonal <b>hay</b> the same way as "there is," but paired with <b>que</b> + an infinitive it means a general obligation that applies to everyone, not one specific person — closer to "you have to" as a general rule than "I have to" (that's tener que — see the <a href="verb-tener.html">tener page</a>).</p>
+    <div class="examples" style="margin-top:14px"><div class="ex-label">Examples</div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="one must">Hay que</span> <span class="gw" data-tip="study">estudiar</span> <span class="gw" data-tip="a lot">mucho</span>.</div><div class="en">You have to study a lot. (in general)</div><button data-de="Hay que estudiar mucho." title="Hear">🔊</button></div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="one must">Hay que</span> <span class="gw" data-tip="be">ser</span> <span class="gw" data-tip="patient">paciente</span>.</div><div class="en">One has to be patient.</div><button data-de="Hay que ser paciente." title="Hear">🔊</button></div>
+      <div class="ex-row"><div class="de"><span class="gw" data-tip="one must not">No hay que</span> <span class="gw" data-tip="worry">preocuparse</span>.</div><div class="en">There's no need to worry.</div><button data-de="No hay que preocuparse." title="Hear">🔊</button></div>
+    </div>
+    <div class="cross">🔗 <b>See also:</b> for obligation aimed at a specific person ("I have to work," "you have to call her"), use <b>tener que</b> instead — covered on the <a href="verb-tener.html">tener page</a>.</div>
+  </div>
+</div>
+
+<script>
+const PRONOUNS = ["yo","tú","él/ella/usted","nosotros","vosotros","ellos/ustedes"];
+
+const TENSES = [
+  {
+    id:"presente", title:"Presente", titleEn:"Present tense — as an auxiliary, this is what builds the Pretérito Perfecto below",
+    forms:["he","has","ha","hemos","habéis","han"],
+    en:["I have (aux.)","you have (aux.)","he/she/you (formal) have (aux.)","we have (aux.)","you all have (aux., Spain)","they/you all have (aux.)"],
+    examples:[
+      {de:"He terminado.", en:"I have finished.", words:["Have","finished"]},
+      {de:"¿Has comido ya?", en:"Have you eaten already?", words:["Have","eaten","already"]},
+      {de:"Ella ha llegado tarde.", en:"She has arrived late.", words:["She","has","arrived","late"]},
+      {de:"Hemos aprendido mucho.", en:"We have learned a lot.", words:["We have","learned","a lot"]}
+    ],
+    tip:"On its own, \"he/has/ha\" never means \"I have a thing\" — it's ALWAYS paired with a past participle (comido, hablado, vivido). Possession is tener's job, not haber's."
+  },
+  {
+    id:"preterito-perfecto", title:"Pretérito Perfecto Compuesto", titleEn:"Present perfect — haber + past participle, for recent or still-relevant past actions",
+    forms:["he + participio","has + participio","ha + participio","hemos + participio","habéis + participio","han + participio"],
+    en:["I have ___ed","you have ___ed","he/she/you (formal) has ___ed","we have ___ed","you all have ___ed (Spain)","they/you all have ___ed"],
+    examples:[
+      {de:"He visitado España dos veces.", en:"I have visited Spain twice.", words:["I have","visited","Spain","two","times"]},
+      {de:"¿Habéis visto la película?", en:"Have you all seen the movie?", words:["Have you all","seen","the","movie"]},
+      {de:"Todavía no he decidido.", en:"I haven't decided yet.", words:["Still","not","I have","decided"]},
+      {de:"Nunca han estado en México.", en:"They've never been to Mexico.", words:["Never","they have","been","in","Mexico"]}
+    ],
+    tip:"Used constantly in Spain for anything that happened recently or today: \"Hoy he trabajado mucho\" (I've worked a lot today). Mexican Spanish leans more on the simple past (trabajé) for the same idea — both are correct and worth recognizing."
+  },
+  {
+    id:"imperfecto", title:"Imperfecto", titleEn:"Also builds the Pluscuamperfecto — \"had ___ed\", the past-before-the-past",
+    forms:["había","habías","había","habíamos","habíais","habían"],
+    en:["I had (aux.)","you had (aux.)","he/she/you (formal) had (aux.)","we had (aux.)","you all had (aux., Spain)","they/you all had (aux.)"],
+    examples:[
+      {de:"Ya había comido cuando llegaste.", en:"I had already eaten when you arrived.", words:["Already","I had","eaten","when","you arrived"]},
+      {de:"Nunca había visto algo así.", en:"I had never seen anything like that.", words:["Never","I had","seen","something","like that"]},
+      {de:"Había mucha gente en la fiesta.", en:"There were a lot of people at the party. (impersonal, not aux.)", words:["There was","a lot of","people","at the","party"]}
+    ],
+    tip:"había also stands alone as the past-tense version of \"hay\" — meaning \"there was/were.\" Context makes it clear whether it's the impersonal form or the auxiliary in front of a participle."
+  },
+  {
+    id:"futuro", title:"Futuro Simple", titleEn:"Also gives habrá — \"there will be\", the future version of hay",
+    forms:["habré","habrás","habrá","habremos","habréis","habrán"],
+    en:["I will have (aux.)","you will have (aux.)","he/she/you (formal) will have (aux.)","we will have (aux.)","you all will have (aux., Spain)","they/you all will have (aux.)"],
+    examples:[
+      {de:"Para mañana, habré terminado el proyecto.", en:"By tomorrow, I will have finished the project.", words:["By","tomorrow","I will have","finished","the","project"]},
+      {de:"Habrá una fiesta este fin de semana.", en:"There will be a party this weekend. (impersonal, not aux.)", words:["There will be","a","party","this","weekend"]}
+    ],
+    tip:"Just like había, habrá doubles as the future of \"hay\" — \"there will be.\" You'll meet habrá far more often in that impersonal sense than as a true auxiliary."
+  },
+  {
+    id:"condicional", title:"Condicional Simple", titleEn:"Also gives habría — \"there would be\", plus the base for hypothetical compound tenses",
+    forms:["habría","habrías","habría","habríamos","habríais","habrían"],
+    en:["I would have (aux.)","you would have (aux.)","he/she/you (formal) would have (aux.)","we would have (aux.)","you all would have (aux., Spain)","they/you all would have (aux.)"],
+    examples:[
+      {de:"Habría llamado, pero no tenía tu número.", en:"I would have called, but I didn't have your number.", words:["I would have","called","but","not","I had","your","number"]},
+      {de:"Habría más opciones si tuviéramos más tiempo.", en:"There would be more options if we had more time. (impersonal)", words:["There would be","more","options","if","we had","more","time"]}
+    ],
+    tip:"habría follows the same double duty as había/habrá: \"there would be\" on its own, or \"would have ___ed\" in front of a participle."
+  }
+];
+
+const PARTICIPLES_REGULAR = [
+  {de:"hablar → hablado", en:"to speak → spoken"},
+  {de:"comer → comido", en:"to eat → eaten"},
+  {de:"vivir → vivido", en:"to live → lived"}
+];
+const PARTICIPLES_IRREGULAR = [
+  {de:"hacer → hecho", en:"to do/make → done/made"},
+  {de:"decir → dicho", en:"to say → said"},
+  {de:"ver → visto", en:"to see → seen"},
+  {de:"escribir → escrito", en:"to write → written"},
+  {de:"poner → puesto", en:"to put → put"},
+  {de:"volver → vuelto", en:"to return → returned"},
+  {de:"abrir → abierto", en:"to open → opened"},
+  {de:"romper → roto", en:"to break → broken"},
+  {de:"morir → muerto", en:"to die → died"},
+  {de:"cubrir → cubierto", en:"to cover → covered"}
+];
+const PARTICIPLE_EX = [
+  {de:"He hecho la tarea.", en:"I have done the homework.", words:["I have","done","the","homework"]},
+  {de:"¿Qué has dicho?", en:"What did you say?", words:["What","have you","said"]},
+  {de:"No he visto esa película.", en:"I haven't seen that movie.", words:["Not","I have","seen","that","movie"]},
+  {de:"La ventana está rota.", en:"The window is broken. (adjective, not aux. — see note)", words:["The","window","is","broken"]}
+];
+
+function speak(text){
+  if(!('speechSynthesis' in window))return;
+  const clean=text.replace(/\s*\(.*?\)\s*/g,' ').replace(/\s*\/\s*/g,', ').replace(/\s{2,}/g,' ').trim();
+  if(!clean)return;
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang='es-MX';u.rate=0.85;
+  window.speechSynthesis.cancel();window.speechSynthesis.speak(u);
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function glossHTML(de, words){
+  if(!words) return esc(de);
+  const tokens=de.split(' ');
+  return tokens.map((tok,i)=>{
+    const m=tok.match(/^([^\s.,!?;:()"¿¡]+)([.,!?;:()"]*)$/);
+    if(!m||words[i]===undefined) return esc(tok);
+    const word=m[1], punct=m[2]||'';
+    return `<span class="gw" data-tip="${esc(words[i])}">${esc(word)}</span>${esc(punct)}`;
+  }).join(' ');
+}
+
+function render(){
+  const el=document.getElementById('sections');
+  let h='';
+
+  TENSES.forEach(t=>{
+    h+=`<div class="section" id="${t.id}">
+      <h2>${esc(t.title)}</h2>
+      <div class="tense-en">${esc(t.titleEn)}</div>
+      <div class="conj-grid">`;
+    PRONOUNS.forEach((p,i)=>{
+      h+=`<div class="conj-row">
+        <div class="top">
+          <span class="pron">${esc(p)}</span>
+          <span class="form"><span class="gw" data-tip="${esc(t.en[i])}">${esc(t.forms[i])}</span></span>
+          <button data-de="${esc(t.forms[i].split(' + ')[0])}" title="Hear">🔊</button>
+        </div>
+        <div class="en">${esc(t.en[i])}</div>
+      </div>`;
+    });
+    h+=`</div><div class="examples"><div class="ex-label">Examples</div>`;
+    t.examples.forEach(ex=>{
+      h+=`<div class="ex-row">
+        <div class="de">${glossHTML(ex.de, ex.words)}</div>
+        <div class="en">${esc(ex.en)}</div>
+        <button data-de="${esc(ex.de)}" title="Hear">🔊</button>
+      </div>`;
+    });
+    h+=`</div>`;
+    if(t.tip) h+=`<div class="tip"><b>Note:</b> ${esc(t.tip)}</div>`;
+    h+=`</div>`;
+  });
+
+  h+=`<div class="section" id="participles">
+    <h2>Irregular past participles</h2>
+    <div class="tense-en">Every compound tense above needs a participle — most are regular (-ado / -ido), but these common ones aren't</div>
+    <div class="verblist">${PARTICIPLES_REGULAR.map(v=>`<span>${esc(v.de)}</span>`).join('')}</div>
+    <div class="verblist">${PARTICIPLES_IRREGULAR.map(v=>`<span>${esc(v.de)}</span>`).join('')}</div>
+    <div class="examples" style="margin-top:14px"><div class="ex-label">Examples</div>`;
+  PARTICIPLE_EX.forEach(ex=>{
+    h+=`<div class="ex-row">
+      <div class="de">${glossHTML(ex.de, ex.words)}</div>
+      <div class="en">${esc(ex.en)}</div>
+      <button data-de="${esc(ex.de)}" title="Hear">🔊</button>
+    </div>`;
+  });
+  h+=`</div>
+    <div class="note">📝 Watch out: several of these participles (roto, abierto, muerto...) also work as plain adjectives with ser/estar — "la ventana está rota" (the window is broken) isn't haber at all, it's estar + an adjective that happens to look like a participle.</div>
+  </div>`;
+
+  el.innerHTML=h;
+  el.querySelectorAll('button[data-de]').forEach(b=>b.addEventListener('click',e=>speak(e.currentTarget.dataset.de)));
+
+  const t=document.getElementById('refTable');
+  let th=`<thead><tr><th style="text-align:left;padding:6px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;color:var(--sub)">Pronoun</th>`;
+  TENSES.forEach(ts=>th+=`<th style="text-align:left;padding:6px;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;color:var(--sub)">${esc(ts.title)}</th>`);
+  th+=`</tr></thead><tbody>`;
+  PRONOUNS.forEach((p,i)=>{
+    th+=`<tr><td style="padding:6px;border-bottom:1px solid var(--border);font-weight:600;color:var(--accent-d)">${esc(p)}</td>`;
+    TENSES.forEach(ts=>th+=`<td style="padding:6px;border-bottom:1px solid var(--border)"><span class="gw" data-tip="${esc(ts.en[i])}">${esc(ts.forms[i].split(' + ')[0])}</span></td>`);
+    th+=`</tr>`;
+  });
+  th+=`</tbody>`;
+  t.innerHTML=th;
+}
+render();
+
+function initMode(){
+  const saved=localStorage.getItem('es-a1-dark');
+  const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setMode(saved!==null?saved==='1':prefersDark);
+}
+function setMode(dark){
+  document.body.classList.toggle('dark',dark);
+  document.getElementById('modeBtn').textContent=dark?'☀️':'🌙';
+  try{localStorage.setItem('es-a1-dark',dark?'1':'0');}catch(e){}
+}
+document.getElementById('modeBtn').onclick=()=>setMode(!document.body.classList.contains('dark'));
+initMode();
+
+(function(){
+  let tipEl, timer, autoHideTimer;
+  function ensureTip(){
+    if(!tipEl){ tipEl=document.createElement('div'); tipEl.id='glossTip'; document.body.appendChild(tipEl); }
+    return tipEl;
+  }
+  function showTip(target){
+    const tip=ensureTip();
+    tip.textContent=target.dataset.tip;
+    tip.classList.add('show');
+    const r=target.getBoundingClientRect();
+    tip.style.left=Math.min(Math.max(r.left+r.width/2,60),window.innerWidth-60)+'px';
+    tip.style.top=Math.max(r.top-10,10)+'px';
+    tip.style.transform='translate(-50%,-100%)';
+    clearTimeout(autoHideTimer);
+    autoHideTimer=setTimeout(hideTip,5000);
+  }
+  function hideTip(){ clearTimeout(timer); clearTimeout(autoHideTimer); ensureTip().classList.remove('show'); }
+  document.addEventListener('mouseover',e=>{
+    const g=e.target.closest('.gw'); if(!g)return;
+    clearTimeout(timer); timer=setTimeout(()=>showTip(g),500);
+  });
+  document.addEventListener('mouseout',e=>{ if(e.target.closest('.gw')) hideTip(); });
+  document.addEventListener('click',e=>{
+    const g=e.target.closest('.gw');
+    if(g){
+      e.stopPropagation();
+      const tip=ensureTip();
+      if(tip.classList.contains('show') && tip.textContent===g.dataset.tip) hideTip();
+      else { clearTimeout(timer); showTip(g); }
+      return;
+    }
+    hideTip();
+  });
+})();
+</script>
+</body>
+</html>
